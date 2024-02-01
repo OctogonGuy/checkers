@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane id="new-game-dialog" stylesheets="resources/stylesheets/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <buttonTypes>
+      <ButtonType fx:id="closeButtonType" buttonData="CANCEL_CLOSE" text="Close" />
+      <ButtonType fx:id="playButtonType" buttonData="OK_DONE" text="Play" />
+      <ButtonType fx:id="infoButtonType" buttonData="HELP_2" text="Info" />
+   </buttonTypes>
+   <content>
+      <VBox styleClass="content">
+         <children>
+            <GridPane id="options-box" VBox.vgrow="NEVER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Highlight Moves" />
+                  <CheckBox fx:id="highlightMovesCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#toggleHighlightMoves" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
+                  <Label text="Bottom Player" GridPane.rowIndex="1" />
+                  <RadioButton fx:id="bottomPlayerBlackRadioButton" mnemonicParsing="false" onAction="#setBottomPlayerTypeToBlack" text="Black" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="bottomPlayer" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="bottomPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setBottomPlayerTypeToWhite" text="White" toggleGroup="$bottomPlayer" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <TreeView id="variant-list" fx:id="variantList" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </content>
+   <header>
+      <VBox alignment="CENTER" styleClass="header">
+         <children>
+            <Label id="logo" text="Checkers" />
+            <Label styleClass="subtitle" text="Select a variant to play." />
+         </children>
+      </VBox>
+   </header>
+</DialogPane>

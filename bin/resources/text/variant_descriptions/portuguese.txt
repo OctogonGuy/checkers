@@ -1,0 +1,1 @@
+Same as Spanish, except it is played on the dark squares. Also, if there is a player with three kings is playing against a player with only one king, and the player with three kings is unable to win within 12 moves, then the game is a draw.

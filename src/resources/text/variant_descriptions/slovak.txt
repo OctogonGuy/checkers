@@ -1,0 +1,1 @@
+Same as Czech but huffing is enforced.

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane id="variant-info-dialog" prefHeight="350.0" prefWidth="450.0" stylesheets="resources/stylesheets/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <StackPane styleClass="header" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="nameLabel" styleClass="title" text="Variant Name" />
+         </children>
+      </StackPane>
+   </top>
+   <center>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content" BorderPane.alignment="CENTER">
+         <content>
+            <VBox id="info">
+               <children>
+                  <Label fx:id="descriptionLabel" text="Description" wrapText="true" />
+                  <GridPane id="details-table">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="0.0" percentWidth="50.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Rows" />
+                        <Label fx:id="rowsLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                        <Label text="Columns" GridPane.rowIndex="1" />
+                        <Label fx:id="colsLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="Pieces per side" GridPane.rowIndex="2" />
+                        <Label fx:id="piecesLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label text="Board pattern" GridPane.rowIndex="3" />
+                        <Label fx:id="boardPatternLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Piece starting positions" GridPane.rowIndex="4" />
+                        <Label fx:id="startingPositionsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="Starting player" GridPane.rowIndex="5" />
+                        <Label fx:id="startingPlayerLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="Movement" GridPane.rowIndex="6" />
+                        <Label fx:id="movementLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label text="Backwards capture" GridPane.rowIndex="7" />
+                        <Label fx:id="backwardsCaptureLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+                        <Label text="Flying kings" GridPane.rowIndex="8" />
+                        <Label fx:id="flyingKingsLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
+                        <Label text="Kings row capture promotion" GridPane.rowIndex="9" />
+                        <Label fx:id="kingsRowCapturePromotionLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                        <Label text="Remove pieces immediately" GridPane.rowIndex="10" />
+                        <Label fx:id="removePiecesImmediatelyLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+                        <Label text="Man can capture king" GridPane.rowIndex="11" />
+                        <Label fx:id="manCanCaptureKingLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="11" />
+                        <Label text="Quantity rule" GridPane.rowIndex="12" />
+                        <Label fx:id="quantityRuleLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="12" />
+                        <Label text="Quality rule" GridPane.rowIndex="13" />
+                        <Label fx:id="qualityRuleLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="13" />
+                        <Label text="Priority rule" GridPane.rowIndex="14" />
+                        <Label fx:id="priorityRuleLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="14" />
+                     </children>
+                  </GridPane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+   <bottom>
+      <ButtonBar BorderPane.alignment="CENTER">
+         <buttons>
+            <Button mnemonicParsing="false" onAction="#close" text="Close" ButtonBar.buttonData="CANCEL_CLOSE" />
+         </buttons>
+      </ButtonBar>
+   </bottom>
+</BorderPane>

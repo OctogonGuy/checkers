@@ -1,0 +1,1 @@
+Huffing is enforced. A player loses if left with a single piece.

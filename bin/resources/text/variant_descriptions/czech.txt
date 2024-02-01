@@ -1,0 +1,1 @@
+If a player can capture with a man or king, capture with king is mandatory.

@@ -1,0 +1,1 @@
+A king has the value of two men when determining the maximum capturing sequence.

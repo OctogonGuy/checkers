@@ -1,0 +1,1 @@
+Same as Spanish, except the king must land on the first square after the last jumped piece.

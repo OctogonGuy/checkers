@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane fx:id="root" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tech.octopusdragon.checkers.gui.GameRootController">
+   <center>
+      <StackPane id="game" fx:id="outerContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="topPlayerMessageLabel" contentDisplay="RIGHT" rotate="180.0" styleClass="message-label" text="Top Player Message" StackPane.alignment="TOP_LEFT" />
+            <Button fx:id="topPlayerEndTurnButton" mnemonicParsing="false" onAction="#endTurn" rotate="180.0" styleClass="end-turn-button" text="End Turn" StackPane.alignment="TOP_CENTER" />
+            <Label fx:id="bottomPlayerMessageLabel" contentDisplay="RIGHT" styleClass="message-label" text="Bottom Player Message" StackPane.alignment="BOTTOM_RIGHT" />
+            <Button fx:id="bottomPlayerEndTurnButton" mnemonicParsing="false" onAction="#endTurn" styleClass="end-turn-button" text="End Turn" StackPane.alignment="BOTTOM_CENTER" />
+            <StackPane fx:id="innerContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="board-container">
+               <children>
+				  <StackPane fx:id="boardContainer" />
+               </children>
+            </StackPane>
+         </children>
+      </StackPane>
+   </center>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Game">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#newGame" text="New Game" />
+                  <MenuItem mnemonicParsing="false" onAction="#restartGame" text="Restart" />
+                  <MenuItem mnemonicParsing="false" onAction="#showInfo" text="Info" />
+              <MenuItem mnemonicParsing="false" onAction="#exit" text="Exit" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Moves">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#undoMove" text="Undo" />
+                  <MenuItem mnemonicParsing="false" onAction="#undoAllMoves" text="Undo All" />
+                  <MenuItem mnemonicParsing="false" onAction="#redoMove" text="Redo" />
+                  <MenuItem mnemonicParsing="false" onAction="#redoAllMoves" text="Redo All" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Options">
+              <items>
+                  <CheckMenuItem fx:id="highlightMovesMenuItem" mnemonicParsing="false" onAction="#toggleHighlightMoves" text="Highlight Moves" />
+                <MenuItem mnemonicParsing="false" onAction="#invertBoard" text="Invert Board" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

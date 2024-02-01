@@ -1,0 +1,1 @@
+Same as Turkish, except jumped pieces are only removed after a capturing sequence.

@@ -1,0 +1,1 @@
+Same as German, except a king must land on the first square after a jumped piece.

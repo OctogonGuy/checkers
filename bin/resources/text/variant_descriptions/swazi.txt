@@ -1,0 +1,1 @@
+Huffing is enforced. Pieces are removed during capture.

@@ -1,0 +1,1 @@
+Same as Turkish but allows for diagonal movement as well.
