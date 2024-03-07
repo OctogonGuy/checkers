@@ -1,1 +1,0 @@
-Men move diagonally forward but capture both diagonally forward and backward. Kings are flying and may move freely any number of spaces along unblocked diagonals. The game is a draw when the same position repeats itself for 3 times.

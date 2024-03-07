@@ -1,1 +1,0 @@
-Pieces move diagonally. Men capture orthogonally in all directions except back on squares of the same color. Kings capture orthogonally in all directions on squares of the same color.

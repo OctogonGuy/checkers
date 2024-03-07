@@ -1,1 +1,0 @@
-Same as Turkish, except kings must land on the first square after a jumped piece.

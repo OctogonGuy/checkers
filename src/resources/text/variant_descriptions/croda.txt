@@ -1,1 +1,0 @@
-Men move forward orthogonally and diagonally and capture orthogonally forwards, backwards, and sideways. Kings move and capture orthogonally forwards, backwards, and sideways.

@@ -1,1 +1,0 @@
-Same as Turkish, except kings can reverse direction during a capturing sequence, and men that land in the kings row will be crowned and continue.

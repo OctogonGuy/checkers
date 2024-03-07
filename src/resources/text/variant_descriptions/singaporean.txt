@@ -1,1 +1,0 @@
-Huffing is enforced. Capture with king is mandatory whether capture sequences are equal or not.

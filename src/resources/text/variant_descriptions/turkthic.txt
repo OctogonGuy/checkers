@@ -1,1 +1,0 @@
-Men move and capture in 5 directions orthogonally forwards, diagonally and sideways. Kings move and capture in all 8 directions. The king must land on the first capture after the last jumped piece. Pieces are immediately removed upon capture.

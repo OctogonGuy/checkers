@@ -1,1 +1,0 @@
-Men move and capture forward and sideways. Kings move and capture forward, sideways, and backward. Pieces are removed during capture. If a man reaches the kings row next to an undefended opposing king, it must capture this king before it is crowned itself.

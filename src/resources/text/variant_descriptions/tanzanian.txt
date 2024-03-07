@@ -1,1 +1,0 @@
-If each player has one or two kings and no other pieces, the game is automatically a draw. If one player has three kings, while the other player has one king and no other pieces, the player with three pieces must win in 12 turns, or the game is a draw.

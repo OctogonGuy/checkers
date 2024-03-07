@@ -1,1 +1,0 @@
-The king must land on the first square after a jumped piece. Removal of captured pieces is immediate. A king can immediately reverse direction during a capture.

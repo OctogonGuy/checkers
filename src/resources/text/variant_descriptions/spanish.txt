@@ -1,1 +1,0 @@
-If there are two or more moves that capture the same number of men and kings, a player must capture the maximum number of opposing kings. Game is played on the light squares.

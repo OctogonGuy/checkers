@@ -1,1 +1,0 @@
-Same as International, except men and kings can also capture orthogonally on squares of the same color. Flying kings move diagonally and orthogonally on squares of the same color.

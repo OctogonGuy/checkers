@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.StackPane?>
-
-
-<fx:root id="board" styleClass="board" fx:id="grid" maxHeight="-Infinity" maxWidth="-Infinity" type="GridPane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-</fx:root>

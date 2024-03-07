@@ -1,1 +1,0 @@
-Same as German Englisch, capturing moves involving a man landing in the kings row terminate and the man promotes to a king.

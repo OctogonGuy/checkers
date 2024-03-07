@@ -1,1 +1,0 @@
-Men move forward diagonally. Men capture in 5 directions orthogonally forwards, diagonally and sideways. Kings are not flying but move and capture in all 8 directions. Upon a man reaching the kings row during a capture, the capture terminates and the man promotes to a king.
