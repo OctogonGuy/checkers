@@ -1,5 +1,6 @@
 package tech.octopusdragon.checkers.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -11,7 +12,8 @@ import tech.octopusdragon.checkers.model.Piece.PieceType;
  * @author Alex Gill
  *
  */
-public class BoardState {
+public class BoardState implements Serializable {
+	private static final long serialVersionUID = 4313286164206736232L;
 	
 	// --- Instance variables ---
 	private PieceType[][] pieceTypes;	// The piece types on the squares

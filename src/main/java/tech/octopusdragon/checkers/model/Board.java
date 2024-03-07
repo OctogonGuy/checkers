@@ -1,5 +1,7 @@
 package tech.octopusdragon.checkers.model;
 
+import java.io.Serializable;
+
 import tech.octopusdragon.checkers.model.Piece.PieceType;
 import tech.octopusdragon.checkers.model.rules.BoardPattern;
 import tech.octopusdragon.checkers.model.rules.StartingPositions;
@@ -9,7 +11,8 @@ import tech.octopusdragon.checkers.model.rules.StartingPositions;
  * @author Alex Gill
  *
  */
-public class Board {
+public class Board implements Serializable {
+	private static final long serialVersionUID = -1895927710282652311L;
 	
 	// --- Global variables  ---
 	// The player on the top side of the board

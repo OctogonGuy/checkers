@@ -424,6 +424,11 @@ public class GameRootController {
 		else if (game.getVariant().isHuffing()) {
 			endTurn();
 		}
+		
+		
+		
+		// --- Serialize ---
+		game.serialize();
 	}
 	
 	

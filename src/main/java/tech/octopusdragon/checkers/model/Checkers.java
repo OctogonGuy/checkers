@@ -1,5 +1,12 @@
 package tech.octopusdragon.checkers.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,11 +22,12 @@ import tech.octopusdragon.checkers.model.rules.KingType;
 // Includes even more variants: https://www.mindsports.nl/index.php/on-the-evolution-of-draughts-variants/
 
 /**
- * Simulates a game of checkers.
+ * A game of checkers.
  * @author Alex Gill
  *
  */
-public class Checkers {
+public class Checkers implements Serializable {
+	private static final long serialVersionUID = -3394984252759443037L;
 	
 	// --- Instance variables ---
 	private Variant variant;			// The variant to play
@@ -101,6 +109,47 @@ public class Checkers {
 			kingVKingTurnsLeft = variant.getKingVKingDrawRule().getNumTurns();
 			kingVKingStarted = false;
 		}
+	}
+	
+	
+	/**
+	 * Serializes game
+	 */
+	public void serialize() {
+		// Make sure userdata folder exists
+		File folder = new File("userdata/");
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		
+		try {
+			FileOutputStream outStream = new FileOutputStream("userdata/checkers.ser");
+			ObjectOutputStream objectOutputFile = new ObjectOutputStream(outStream);
+			objectOutputFile.writeObject(this);
+			objectOutputFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Returns a deserialized game
+	 * @return Deserialized game
+	 */
+	public static Checkers deserialize(String filename) {
+		Checkers object = null;
+		try {
+			FileInputStream inStream = new FileInputStream("userdata/checkers.ser");
+			ObjectInputStream objectInputFile = new ObjectInputStream(inStream);
+			object = (Checkers) objectInputFile.readObject();
+			objectInputFile.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return object;
 	}
 	
 	

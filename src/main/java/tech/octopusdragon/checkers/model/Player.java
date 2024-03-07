@@ -1,5 +1,6 @@
 package tech.octopusdragon.checkers.model;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -7,8 +8,9 @@ import java.util.Collection;
  * @author Alex Gill
  *
  */
-public class Player {
-
+public class Player implements Serializable {
+	private static final long serialVersionUID = 7116097390298259559L;
+	
 	// --- Instance variables ---
 	private PlayerType type;	// The player type
 	

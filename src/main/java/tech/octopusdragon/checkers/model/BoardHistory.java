@@ -3,6 +3,7 @@
  */
 package tech.octopusdragon.checkers.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +15,8 @@ import java.util.Map;
  * @author Alex Gill
  * 
  */
-public class BoardHistory {
+public class BoardHistory implements Serializable {
+	private static final long serialVersionUID = 1789959895674278458L;
 	
 	// Keeps track of the game state of game board and player
 	private List<BoardState> boardHistory;

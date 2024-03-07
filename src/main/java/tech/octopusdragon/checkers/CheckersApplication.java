@@ -1,5 +1,6 @@
 package tech.octopusdragon.checkers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -22,17 +23,28 @@ import javafx.stage.Stage;
 public class CheckersApplication extends Application {
 	
 	// --- Constants ---
+	public static final String USERDATA = "userdata/checkers.ser";
 	public static final String CHECK_IMAGE_PATH = "images/icon.png";
 	public static final String CSS_PATH = "styles/main.css";
 	
 	
 	@Override
 	public void start(Stage primaryStage) {
+		Checkers game;
 		
-		// Show the new game dialog
-		Optional<Checkers> result = new NewGameDialog().showAndWait();
-		if (!result.isPresent()) {
-			System.exit(0);
+		// If there is no userdata, show the new game dialog
+		File userdata = new File(USERDATA);
+		if (!userdata.exists()) {
+			Optional<Checkers> result = new NewGameDialog().showAndWait();
+			if (!result.isPresent()) {
+				System.exit(0);
+			}
+			game = result.get();
+		}
+		
+		// Otherwise, load the saved game
+		else {
+			game = Checkers.deserialize(USERDATA);
 		}
 		
 		// Set the scene
@@ -42,7 +54,7 @@ public class CheckersApplication extends Application {
 						CHECK_IMAGE_PATH)));
 		
 		// Set the new game
-		controller.newGame(result.get());
+		controller.newGame(game);
 		
 		// Show the scene
 		Platform.runLater(() -> {

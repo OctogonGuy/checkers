@@ -1,12 +1,15 @@
 package tech.octopusdragon.checkers.model;
 
+import java.io.Serializable;
+
 /**
  * Represents a piece that has a type
  * @author Alex Gill
  *
  */
-public class Piece {
-
+public class Piece implements Serializable {
+	private static final long serialVersionUID = -3719252967902203014L;
+	
 	// --- Instance variables ---
 	private PieceType type;			// The type of piece
 	private boolean hasMoved;		// Whether the piece has been moved
