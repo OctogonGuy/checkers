@@ -10,8 +10,10 @@ import tech.octopusdragon.checkers.control.BoardGraphic;
 import tech.octopusdragon.checkers.control.GhostPieceGraphic;
 import tech.octopusdragon.checkers.control.PieceGraphic;
 import tech.octopusdragon.checkers.model.Board;
-import tech.octopusdragon.checkers.model.CapturePosition;
+import tech.octopusdragon.checkers.model.Capture;
 import tech.octopusdragon.checkers.model.Checkers;
+import tech.octopusdragon.checkers.model.ComputerPlayer;
+import tech.octopusdragon.checkers.model.Move;
 import tech.octopusdragon.checkers.model.Piece;
 import tech.octopusdragon.checkers.model.Player;
 import tech.octopusdragon.checkers.model.PlayerType;
@@ -66,6 +68,9 @@ public class GameRootController {
 	// --- Global variables ---
 	// Whether to highlight potential moves
 	private static boolean highlightMoves = true;
+	// Whether each player is a computer player
+	private static boolean topPlayerComputer = false;
+	private static boolean bottomPlayerComputer = false;
 	
 	
 	// --- Global variables ---
@@ -234,7 +239,10 @@ public class GameRootController {
 	 * Highlights all pieces that can move.
 	 */
 	private void highlightMovablePieces() {
-		if (!highlightMoves) return;
+		if (!highlightMoves ||
+				game.getCurPlayer() == game.topPlayer() && topPlayerComputer ||
+				game.getCurPlayer() == game.bottomPlayer() && bottomPlayerComputer)
+			return;
 		
 		for (Piece piece: game.movablePieces()) {
 			int row = game.getBoard().getPosition(piece).getRow();
@@ -257,9 +265,9 @@ public class GameRootController {
 		if (!highlightMoves) return;
 		
 		Piece piece = game.getBoard().getPiece(selectedPos);
-		for (Position position : game.validMoves(piece)) {
-			int row = position.getRow();
-			int col = position.getCol();
+		for (Move move : game.validMoves(piece)) {
+			int row = move.getToPos().getRow();
+			int col = move.getToPos().getCol();
 			
 			// Add ghost piece to indicate movable space
 			board.setPiece(row, col, new GhostPieceGraphic(board.getSquareSize()));
@@ -372,6 +380,17 @@ public class GameRootController {
 	/**
 	 * Moves a piece on the game board and executes what needs to be done
 	 * following that
+	 * @param move The move
+	 */
+	private void move(Move move) {
+		move(move.getFromPos().getRow(), move.getFromPos().getCol(),
+				move.getToPos().getRow(), move.getToPos().getCol());
+	}
+	
+	
+	/**
+	 * Moves a piece on the game board and executes what needs to be done
+	 * following that
 	 * @param fromRow The row from which the piece is to be moved
 	 * @param fromCol The column from which the piece is to be moved
 	 * @param toRow The row to which the piece is to be moved
@@ -442,6 +461,19 @@ public class GameRootController {
 		// Hide end turn buttons
 		for (Button endTurnButton : endTurnButtons.values()) {
 			endTurnButton.setVisible(false);
+		}
+		
+		// If player is computer, move for it
+		if (game.getCurPlayer() == game.topPlayer() && topPlayerComputer ||
+				game.getCurPlayer() == game.bottomPlayer() && bottomPlayerComputer) {
+			Platform.runLater(() -> {
+				Move computerMove = ComputerPlayer.getMove(game);
+				Animation moveAnimation = moveAnimation(computerMove);
+				moveAnimation.setOnFinished(e -> {
+					move(computerMove);
+				});
+				moveAnimation.play();
+			});
 		}
 		
 		// Highlight movable pieces
@@ -519,6 +551,18 @@ public class GameRootController {
 	
 	/**
 	 * Returns an animation showing the player's move.
+	 * @param move The move
+	 * @return The animation
+	 */
+	private Animation moveAnimation(Move move) {
+		return moveAnimation(move.getFromPos().getRow(), move.getFromPos().getCol(),
+				move.getToPos().getRow(), move.getToPos().getCol());
+	}
+	
+	
+	
+	/**
+	 * Returns an animation showing the player's move.
 	 * @param fromRow The row from which the piece is to be moved
 	 * @param fromCol The column from which the piece is to be moved
 	 * @param toRow The row to which the piece is to be moved
@@ -576,10 +620,9 @@ public class GameRootController {
 		}
 		else if (game.isValidCapture(piece, toRow, toCol) && !game.canMultiCapture(piece) && !game.getVariant().isHuffing()) {
 			Piece capturedPiece = null;
-			for (CapturePosition pos : game.validCaptures(piece)) {
-				if (pos.getRow() == toRow && pos.getCol() == toCol) {
-					Piece curCapturedPiece = pos.getCapturedPiece();
-					Position curCapturedPos = game.getBoard().getPosition(curCapturedPiece);
+			for (Capture capture : game.validCaptures(piece)) {
+				if (capture.getToPos().getRow() == toRow && capture.getToPos().getCol() == toCol) {
+					Position curCapturedPos = capture.getCapturePos();
 					capturedPiece = game.getBoard().getPiece(curCapturedPos);
 					break;
 				}
@@ -686,10 +729,9 @@ public class GameRootController {
 		
 		// Look for current capture piece and position
 		Piece capturedPiece = null;
-		for (CapturePosition pos : game.validCaptures(piece)) {
-			if (pos.getRow() == toRow && pos.getCol() == toCol) {
-				Piece curCapturedPiece = pos.getCapturedPiece();
-				Position curCapturedPos = game.getBoard().getPosition(curCapturedPiece);
+		for (Capture capture : game.validCaptures(piece)) {
+			if (capture.getToPos().getRow() == toRow && capture.getToPos().getCol() == toCol) {
+				Position curCapturedPos = capture.getCapturePos();
 				capturedPiece = game.getBoard().getPiece(curCapturedPos);
 				break;
 			}
@@ -1070,9 +1112,9 @@ public class GameRootController {
 			else {
 				if (game.isValidCapture(draggedPiece.getPiece(), row, col) &&
 						game.getVariant().isRemovePiecesImmediately()) {
-					for (CapturePosition pos : game.validCaptures(draggedPiece.getPiece())) {
-						if (pos.getRow() == row && pos.getCol() == col) {
-							Position capturedPos = game.getBoard().getPosition(pos.getCapturedPiece());
+					for (Capture capture : game.validCaptures(draggedPiece.getPiece())) {
+						if (capture.getToPos().getRow() == row && capture.getToPos().getCol() == col) {
+							Position capturedPos = capture.getCapturePos();
 							removeAnimation(capturedPos.getRow(), capturedPos.getCol());
 							break;
 						}
@@ -1081,9 +1123,9 @@ public class GameRootController {
 				else if (game.isValidCapture(draggedPiece.getPiece(), row, col) &&
 						!game.canMultiCapture(draggedPiece.getPiece()) &&
 						!game.getVariant().isHuffing()) {
-					for (CapturePosition pos : game.validCaptures(draggedPiece.getPiece())) {
-						if (pos.getRow() == row && pos.getCol() == col) {
-							Position capturedPos = game.getBoard().getPosition(pos.getCapturedPiece());
+					for (Capture capture : game.validCaptures(draggedPiece.getPiece())) {
+						if (capture.getToPos().getRow() == row && capture.getToPos().getCol() == col) {
+							Position capturedPos = capture.getCapturePos();
 							delayedCaptureAnimation(game.getBoard().getPiece(capturedPos)).play();
 							break;
 						}
@@ -1291,6 +1333,38 @@ public class GameRootController {
 	}
 	
 	
+	/**
+	 * @return the topPlayerComputer
+	 */
+	public static boolean isTopPlayerComputer() {
+		return topPlayerComputer;
+	}
+
+
+	/**
+	 * @param topPlayerComputer the topPlayerComputer to set
+	 */
+	public static void setTopPlayerComputer(boolean topPlayerComputer) {
+		GameRootController.topPlayerComputer = topPlayerComputer;
+	}
+
+
+	/**
+	 * @return the bottomPlayerComputer
+	 */
+	public static boolean isBottomPlayerComputer() {
+		return bottomPlayerComputer;
+	}
+
+
+	/**
+	 * @param bottomPlayerComputer the bottomPlayerComputer to set
+	 */
+	public static void setBottomPlayerComputer(boolean bottomPlayerComputer) {
+		GameRootController.bottomPlayerComputer = bottomPlayerComputer;
+	}
+
+
 	/**
 	 * Swaps the top and bottom player, reflecting the board layout
 	 */

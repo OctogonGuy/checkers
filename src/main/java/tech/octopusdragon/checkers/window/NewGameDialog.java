@@ -198,6 +198,18 @@ public class NewGameDialog extends Dialog<Checkers> {
 	
 	
 	@FXML
+	private void setTopPlayerToComputer() {
+		GameRootController.setTopPlayerComputer(!GameRootController.isTopPlayerComputer());
+	}
+	
+	
+	@FXML
+	private void setBottomPlayerToComputer() {
+		GameRootController.setBottomPlayerComputer(!GameRootController.isBottomPlayerComputer());
+	}
+	
+	
+	@FXML
 	private void toggleHighlightMoves() {
 		GameRootController.setHighlightMoves(!GameRootController.getHighlightMoves());
 	}

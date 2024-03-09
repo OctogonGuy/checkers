@@ -30,6 +30,7 @@
               <rowConstraints>
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Highlight Moves" />
@@ -40,6 +41,9 @@
                         <ToggleGroup fx:id="bottomPlayer" />
                      </toggleGroup></RadioButton>
                   <RadioButton fx:id="bottomPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setBottomPlayerTypeToWhite" text="White" toggleGroup="$bottomPlayer" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="Computer Player" GridPane.rowIndex="2" />
+                  <CheckBox mnemonicParsing="false" onAction="#setTopPlayerToComputer" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <CheckBox mnemonicParsing="false" onAction="#setBottomPlayerToComputer" text="Bottom" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <TreeView id="variant-list" fx:id="variantList" VBox.vgrow="ALWAYS" />

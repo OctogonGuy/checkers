@@ -499,6 +499,16 @@ public class Checkers implements Serializable {
 	
 	/**
 	 * Moves a piece.
+	 * @param move The move
+	*/
+	public void move(Move move) {
+		move(move.getFromPos().getRow(), move.getFromPos().getCol(),
+				move.getToPos().getRow(), move.getToPos().getCol());
+	}
+	
+	
+	/**
+	 * Moves a piece.
 	 * @param piece The piece to be moved
 	 * @param toRow The row to which the piece is to be moved
 	 * @param toCol The column to which the piece is to be moved
@@ -1067,12 +1077,11 @@ public class Checkers implements Serializable {
 	 * @return Whether the piece can perform a multi-capture
 	 */
 	public boolean canMultiCapture(Piece piece) {
-		for (CapturePosition capturePos : validCaptures(piece)) {
-			Position fromPos = board.getPosition(piece);
-			int fromRow = fromPos.getRow();
-			int fromCol = fromPos.getCol();
-			int toRow = capturePos.getRow();
-			int toCol = capturePos.getCol();
+		for (Capture capture : validCaptures(piece)) {
+			int fromRow = capture.getFromPos().getRow();
+			int fromCol = capture.getFromPos().getCol();
+			int toRow = capture.getToPos().getRow();
+			int toCol = capture.getToPos().getCol();
 			Checkers gameCopy = this.clone();
 			gameCopy.move(fromRow, fromCol, toRow, toCol);
 			if (gameCopy.canCapture(gameCopy.getBoard().getPiece(toRow, toCol))) {
@@ -1111,8 +1120,8 @@ public class Checkers implements Serializable {
 	 * @return Whether the given move is a valid move
 	 */
 	public boolean isValidMove(Piece piece, int toRow, int toCol) {
-		for (Position movePos : validMoves(piece)) {
-			if (movePos.getRow() == toRow && movePos.getCol() == toCol) {
+		for (Move move : validMoves(piece)) {
+			if (move.getToPos().getRow() == toRow && move.getToPos().getCol() == toCol) {
 				return true;
 			}
 		}
@@ -1128,8 +1137,8 @@ public class Checkers implements Serializable {
 	 * @return Whether the given move is a valid capture
 	 */
 	public boolean isValidCapture(Piece piece, int toRow, int toCol) {
-		for (Position capturePos : validCaptures(piece)) {
-			if (capturePos.getRow() == toRow && capturePos.getCol() == toCol) {
+		for (Move capture : validCaptures(piece)) {
+			if (capture.getToPos().getRow() == toRow && capture.getToPos().getCol() == toCol) {
 				return true;
 			}
 		}
@@ -1144,12 +1153,12 @@ public class Checkers implements Serializable {
 	 * @param player The player to check
 	 * @return The valid moves
 	 */
-	public List<Position> validMoves(Player player) {
-		List<Position> positions = new ArrayList<>();
+	public List<Move> validMoves(Player player) {
+		List<Move> moves = new ArrayList<>();
 		for (Piece piece : piecesOf(player)) {
-			positions.addAll(validMoves(piece));
+			moves.addAll(validMoves(piece));
 		}
-		return positions;
+		return moves;
 	}
 	
 	
@@ -1160,26 +1169,36 @@ public class Checkers implements Serializable {
 	 * @param piece The piece to check
 	 * @return The valid moves
 	 */
-	public List<Position> validMoves(Piece piece) {
-		List<Position> positions = new ArrayList<>();
+	public List<Move> validMoves(Piece piece) {
+		List<Move> moves = new ArrayList<>();
 		if (variant.isHuffing()) {
 			if (moved) {
 				if (capturingPiece != null && piece == capturingPiece) {
-					positions.addAll(validCapturePositions(piece));
+					for (CapturePosition capturePos : validCapturePositions(piece)) {
+						moves.add(new Capture(board.getPosition(piece), capturePos, board.getPosition(capturePos.getCapturedPiece())));
+					}
 				}
 			}
 			else {
-				positions.addAll(validCapturePositions(piece));
-				positions.addAll(validMovementPositions(piece));
+				for (CapturePosition capturePos : validCapturePositions(piece)) {
+					moves.add(new Capture(board.getPosition(piece), capturePos, board.getPosition(capturePos.getCapturedPiece())));
+				}
+				for (Position pos : validMovementPositions(piece)) {
+					moves.add(new Capture(board.getPosition(piece), pos));
+				}
 			}
 		}
 		else if (canCapture(playerOf(piece))) {
-			positions.addAll(validCapturePositions(piece));
+			for (CapturePosition capturePos : validCapturePositions(piece)) {
+				moves.add(new Capture(board.getPosition(piece), capturePos, board.getPosition(capturePos.getCapturedPiece())));
+			}
 		}
 		else {
-			positions.addAll(validMovementPositions(piece));
+			for (Position pos : validMovementPositions(piece)) {
+				moves.add(new Capture(board.getPosition(piece), pos));
+			}
 		}
-		return positions;
+		return moves;
 	}
 	
 	
@@ -1190,12 +1209,12 @@ public class Checkers implements Serializable {
 	 * @param player The player to check
 	 * @return The valid captures
 	 */
-	private List<CapturePosition> validCaptures(Player player) {
-		List<CapturePosition> positions = new ArrayList<>();
+	private List<Capture> validCaptures(Player player) {
+		List<Capture> captures = new ArrayList<>();
 		for (Piece piece : piecesOf(player)) {
-			positions.addAll(validCaptures(piece));
+			captures.addAll(validCaptures(piece));
 		}
-		return positions;
+		return captures;
 	}
 	
 	
@@ -1205,10 +1224,12 @@ public class Checkers implements Serializable {
 	 * @param piece The piece to check
 	 * @return The valid captures
 	 */
-	public List<CapturePosition> validCaptures(Piece piece) {
-		List<CapturePosition> positions = new ArrayList<>();
-		positions.addAll(validCapturePositions(piece));
-		return positions;
+	public List<Capture> validCaptures(Piece piece) {
+		List<Capture> captures = new ArrayList<>();
+		for (CapturePosition capturePos : validCapturePositions(piece)) {
+			captures.add(new Capture(board.getPosition(piece), capturePos, board.getPosition(capturePos.getCapturedPiece())));
+		}
+		return captures;
 	}
 	
 	
