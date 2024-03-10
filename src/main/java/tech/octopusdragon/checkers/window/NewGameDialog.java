@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import tech.octopusdragon.checkers.CheckersApplication;
-import tech.octopusdragon.checkers.controller.GameRootController;
 import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Checkers;
+import tech.octopusdragon.checkers.model.Config;
 import tech.octopusdragon.checkers.model.Family;
 import tech.octopusdragon.checkers.model.PlayerType;
 import tech.octopusdragon.checkers.model.Variant;
@@ -50,9 +50,13 @@ public class NewGameDialog extends Dialog<Checkers> {
 	@FXML private ButtonType playButtonType;
 	@FXML private ButtonType infoButtonType;
     @FXML private TreeView<Object> variantList;
-    @FXML private RadioButton bottomPlayerBlackRadioButton;
-    @FXML private RadioButton bottomPlayerWhiteRadioButton;
     @FXML private CheckBox highlightMovesCheckBox;
+    @FXML private RadioButton topPlayerBlackRadioButton;
+    @FXML private RadioButton bottomPlayerBlackRadioButton;
+    @FXML private RadioButton topPlayerWhiteRadioButton;
+    @FXML private RadioButton bottomPlayerWhiteRadioButton;
+    @FXML private CheckBox blackComputerPlayerCheckBox;
+    @FXML private CheckBox whiteComputerPlayerCheckBox;
     private Checkers game;
 	
     
@@ -118,18 +122,28 @@ public class NewGameDialog extends Dialog<Checkers> {
 		}
 		variantList.setRoot(rootItem);
 		
+		// Bind top/bottom player radio buttons' selected property to inverse
+		topPlayerBlackRadioButton.selectedProperty().bindBidirectional(bottomPlayerWhiteRadioButton.selectedProperty());
+		bottomPlayerBlackRadioButton.selectedProperty().bindBidirectional(topPlayerWhiteRadioButton.selectedProperty());
+		
 		// Set initially selected check and radio buttons
+		highlightMovesCheckBox.setSelected(Config.isHighlightMoves());
+		RadioButton topPlayerRadioButton = null;
 		RadioButton bottomPlayerRadioButton = null;
-		switch (Board.getBottomPlayerType()) {
+		switch (Config.getTopPlayer()) {
 		case BLACK:
-			bottomPlayerRadioButton = bottomPlayerBlackRadioButton;
-			break;
-		case WHITE:
+			topPlayerRadioButton = topPlayerBlackRadioButton;
 			bottomPlayerRadioButton = bottomPlayerWhiteRadioButton;
 			break;
+		case WHITE:
+			topPlayerRadioButton = topPlayerWhiteRadioButton;
+			bottomPlayerRadioButton = bottomPlayerBlackRadioButton;
+			break;
 		}
+		topPlayerRadioButton.setSelected(true);
 		bottomPlayerRadioButton.setSelected(true);
-		highlightMovesCheckBox.setSelected(GameRootController.getHighlightMoves());
+		blackComputerPlayerCheckBox.setSelected(Config.isBlackComputerPlayer());
+		whiteComputerPlayerCheckBox.setSelected(Config.isWhiteComputerPlayer());
 
 		// Disable Play and Info buttons when nothing is selected
 		Binding<Boolean> disableButtonBinding = Bindings.createBooleanBinding(() -> {
@@ -186,31 +200,33 @@ public class NewGameDialog extends Dialog<Checkers> {
 	
 	
 	@FXML
-	private void setBottomPlayerTypeToBlack() {
-		Board.setBottomPlayerType(PlayerType.BLACK);
+	private void setTopPlayerTypeToBlack() {
+		Board.setTopPlayerType(PlayerType.BLACK);
+		Config.setTopPlayer(PlayerType.BLACK);
 	}
 	
 	
 	@FXML
-	private void setBottomPlayerTypeToWhite() {
-		Board.setBottomPlayerType(PlayerType.WHITE);
+	private void setTopPlayerTypeToWhite() {
+		Board.setTopPlayerType(PlayerType.WHITE);
+		Config.setTopPlayer(PlayerType.WHITE);
 	}
 	
 	
 	@FXML
-	private void setTopPlayerToComputer() {
-		GameRootController.setTopPlayerComputer(!GameRootController.isTopPlayerComputer());
+	private void toggleBlackPlayerComputer() {
+		Config.setBlackComputerPlayer(!Config.isBlackComputerPlayer());
 	}
 	
 	
 	@FXML
-	private void setBottomPlayerToComputer() {
-		GameRootController.setBottomPlayerComputer(!GameRootController.isBottomPlayerComputer());
+	private void toggleWhitePlayerComputer() {
+		Config.setWhiteComputerPlayer(!Config.isWhiteComputerPlayer());
 	}
 	
 	
 	@FXML
 	private void toggleHighlightMoves() {
-		GameRootController.setHighlightMoves(!GameRootController.getHighlightMoves());
+		Config.setHighlightMoves(!Config.isHighlightMoves());
 	}
 }

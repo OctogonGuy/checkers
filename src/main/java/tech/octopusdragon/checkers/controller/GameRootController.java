@@ -13,6 +13,7 @@ import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Capture;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.ComputerPlayer;
+import tech.octopusdragon.checkers.model.Config;
 import tech.octopusdragon.checkers.model.Move;
 import tech.octopusdragon.checkers.model.Piece;
 import tech.octopusdragon.checkers.model.Player;
@@ -66,14 +67,6 @@ public class GameRootController {
 	
 	
 	// --- Global variables ---
-	// Whether to highlight potential moves
-	private static boolean highlightMoves = true;
-	// Whether each player is a computer player
-	private static boolean topPlayerComputer = false;
-	private static boolean bottomPlayerComputer = false;
-	
-	
-	// --- Global variables ---
 	private Checkers game;			// The game
 	private boolean selected;		// Whether a position is selected
 	private Position selectedPos;	// The last selected position on the board
@@ -94,6 +87,8 @@ public class GameRootController {
 	@FXML private StackPane bottomPane;
 	// Menu
 	@FXML private CheckMenuItem highlightMovesMenuItem;
+	@FXML private CheckMenuItem blackComputerPlayerCheckMenuItem;
+	@FXML private CheckMenuItem whiteComputerPlayerCheckMenuItem;
 	// End turn buttons
 	private Map<PlayerType, Button> endTurnButtons;
 	@FXML private Button topPlayerEndTurnButton;
@@ -211,8 +206,10 @@ public class GameRootController {
 		endTurnButtons.put(Board.getTopPlayerType(), topPlayerEndTurnButton);
 		endTurnButtons.put(Board.getBottomPlayerType(), bottomPlayerEndTurnButton);
 		
-		// Set appropriate check value for check menu item
-		highlightMovesMenuItem.setSelected(highlightMoves);
+		// Set appropriate check value for check menu items
+		highlightMovesMenuItem.setSelected(Config.isHighlightMoves());
+		blackComputerPlayerCheckMenuItem.setSelected(Config.isBlackComputerPlayer());
+		whiteComputerPlayerCheckMenuItem.setSelected(Config.isWhiteComputerPlayer());
 		
 		// Highlight movable pieces
 		updatePlayer();
@@ -239,9 +236,9 @@ public class GameRootController {
 	 * Highlights all pieces that can move.
 	 */
 	private void highlightMovablePieces() {
-		if (!highlightMoves ||
-				game.getCurPlayer() == game.topPlayer() && topPlayerComputer ||
-				game.getCurPlayer() == game.bottomPlayer() && bottomPlayerComputer)
+		if (!Config.isHighlightMoves() ||
+				game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
+				game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer())
 			return;
 		
 		for (Piece piece: game.movablePieces()) {
@@ -262,7 +259,7 @@ public class GameRootController {
 	 * @param pieceCol The column of the piece
 	 */
 	private void highlightMovableSpaces() {
-		if (!highlightMoves) return;
+		if (!Config.isHighlightMoves()) return;
 		
 		Piece piece = game.getBoard().getPiece(selectedPos);
 		for (Move move : game.validMoves(piece)) {
@@ -304,11 +301,11 @@ public class GameRootController {
 	 * Toggles whether or not moves are highlighted
 	 */
 	private void toggleHighlightMoves() {
-		highlightMoves = !highlightMoves;
-		if (highlightMoves) {
+		Config.setHighlightMoves(!Config.isHighlightMoves());
+		if (Config.isHighlightMoves()) {
 			highlightMoves();
 		}
-		if (!highlightMoves) {
+		if (!Config.isHighlightMoves()) {
 			removeHighlight();
 		}
 	}
@@ -424,8 +421,25 @@ public class GameRootController {
 		
 		// Or if the player can make another capture, indicate that
 		else if (game.canCapture(piece)) {
-			selectPiece(toRow, toCol);
-			highlightMovableSpaces();
+			
+			// If player is computer, move for it
+			if (game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
+					game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer()) {
+				Platform.runLater(() -> {
+					Move computerMove = ComputerPlayer.getMove(game);
+					Animation moveAnimation = moveAnimation(computerMove);
+					moveAnimation.setOnFinished(e -> {
+						move(computerMove);
+					});
+					moveAnimation.play();
+				});
+			}
+			
+			// Otherwise, let human player move
+			else {
+				selectPiece(toRow, toCol);
+				highlightMovableSpaces();
+			}
 		}
 		
 		// Otherwise, the next player's movable pieces
@@ -464,8 +478,8 @@ public class GameRootController {
 		}
 		
 		// If player is computer, move for it
-		if (game.getCurPlayer() == game.topPlayer() && topPlayerComputer ||
-				game.getCurPlayer() == game.bottomPlayer() && bottomPlayerComputer) {
+		if (game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
+				game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer()) {
 			Platform.runLater(() -> {
 				Move computerMove = ComputerPlayer.getMove(game);
 				Animation moveAnimation = moveAnimation(computerMove);
@@ -1220,6 +1234,16 @@ public class GameRootController {
 		toggleHighlightMoves();
 	}
 	
+	@FXML
+	private void toggleBlackComputerPlayer(ActionEvent event) {
+		Config.setBlackComputerPlayer(!Config.isBlackComputerPlayer());
+	}
+	
+	@FXML
+	private void toggleWhiteComputerPlayer(ActionEvent event) {
+		Config.setWhiteComputerPlayer(!Config.isWhiteComputerPlayer());
+	}
+	
 	
 	
 	// --- Misc. ---
@@ -1315,55 +1339,6 @@ public class GameRootController {
 	
 	
 	// --- Public methods ---
-	
-	/**
-	 * @return Whether possible moves are highlighted
-	 */
-	public static boolean getHighlightMoves() {
-		return highlightMoves;
-	}
-	
-	
-	/**
-	 * Sets whether to highlight possible moves to the players
-	 * @param highlight Whether to highlight possible moves
-	 */
-	public static void setHighlightMoves(boolean highlight) {
-		highlightMoves = highlight;
-	}
-	
-	
-	/**
-	 * @return the topPlayerComputer
-	 */
-	public static boolean isTopPlayerComputer() {
-		return topPlayerComputer;
-	}
-
-
-	/**
-	 * @param topPlayerComputer the topPlayerComputer to set
-	 */
-	public static void setTopPlayerComputer(boolean topPlayerComputer) {
-		GameRootController.topPlayerComputer = topPlayerComputer;
-	}
-
-
-	/**
-	 * @return the bottomPlayerComputer
-	 */
-	public static boolean isBottomPlayerComputer() {
-		return bottomPlayerComputer;
-	}
-
-
-	/**
-	 * @param bottomPlayerComputer the bottomPlayerComputer to set
-	 */
-	public static void setBottomPlayerComputer(boolean bottomPlayerComputer) {
-		GameRootController.bottomPlayerComputer = bottomPlayerComputer;
-	}
-
 
 	/**
 	 * Swaps the top and bottom player, reflecting the board layout

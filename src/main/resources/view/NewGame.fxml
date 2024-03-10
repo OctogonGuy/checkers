@@ -23,8 +23,9 @@
          <children>
             <GridPane id="options-box" VBox.vgrow="NEVER">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" />
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="23.0" />
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
               </columnConstraints>
               <rowConstraints>
@@ -35,15 +36,21 @@
                <children>
                   <Label text="Highlight Moves" />
                   <CheckBox fx:id="highlightMovesCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#toggleHighlightMoves" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
-                  <Label text="Bottom Player" GridPane.rowIndex="1" />
-                  <RadioButton fx:id="bottomPlayerBlackRadioButton" mnemonicParsing="false" onAction="#setBottomPlayerTypeToBlack" text="Black" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label text="Black" GridPane.rowIndex="1" />
+                  <RadioButton fx:id="topPlayerBlackRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToBlack" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <toggleGroup>
-                        <ToggleGroup fx:id="bottomPlayer" />
+                        <ToggleGroup fx:id="blackTopOrBottom" />
                      </toggleGroup></RadioButton>
-                  <RadioButton fx:id="bottomPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setBottomPlayerTypeToWhite" text="White" toggleGroup="$bottomPlayer" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="Computer Player" GridPane.rowIndex="2" />
-                  <CheckBox mnemonicParsing="false" onAction="#setTopPlayerToComputer" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <CheckBox mnemonicParsing="false" onAction="#setBottomPlayerToComputer" text="Bottom" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <RadioButton fx:id="bottomPlayerBlackRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Bottom" toggleGroup="$blackTopOrBottom" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="White" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="blackComputerPlayerCheckBox" mnemonicParsing="false" onAction="#toggleBlackPlayerComputer" text="Computer" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <CheckBox fx:id="whiteComputerPlayerCheckBox" mnemonicParsing="false" onAction="#toggleWhitePlayerComputer" text="Computer" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <RadioButton fx:id="topPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="whiteTopOrBottom" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="bottomPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToBlack" text="Bottom" toggleGroup="$whiteTopOrBottom" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <TreeView id="variant-list" fx:id="variantList" VBox.vgrow="ALWAYS" />

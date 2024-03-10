@@ -16,7 +16,7 @@ public class Board implements Serializable {
 	
 	// --- Global variables  ---
 	// The player on the top side of the board
-	private static PlayerType topPlayerType = PlayerType.BLACK;
+	private static PlayerType topPlayerType = Config.getTopPlayer();
 	// The player on the bottom side of the board
 	private static PlayerType bottomPlayerType =
 			topPlayerType == PlayerType.BLACK ? PlayerType.WHITE : PlayerType.BLACK;

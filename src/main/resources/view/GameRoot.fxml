@@ -48,6 +48,12 @@
               <items>
                   <CheckMenuItem fx:id="highlightMovesMenuItem" mnemonicParsing="false" onAction="#toggleHighlightMoves" text="Highlight Moves" />
                 <MenuItem mnemonicParsing="false" onAction="#invertBoard" text="Invert Board" />
+                  <Menu mnemonicParsing="false" text="Computer Player">
+                    <items>
+                        <CheckMenuItem fx:id="blackComputerPlayerCheckMenuItem" mnemonicParsing="false" onAction="#toggleBlackComputerPlayer" text="Black" />
+                        <CheckMenuItem fx:id="whiteComputerPlayerCheckMenuItem" mnemonicParsing="false" onAction="#toggleWhiteComputerPlayer" text="White" />
+                    </items>
+                  </Menu>
               </items>
             </Menu>
         </menus>
