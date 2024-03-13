@@ -128,6 +128,38 @@ public class Config {
 		save();
 	}
 	
+	/**
+	 * @return the blackDifficulty
+	 */
+	public static double getBlackDifficulty() {
+		return config.blackDifficulty;
+	}
+
+	/**
+	 * Sets and writes blackDifficulty to config file
+	 * @param blackDifficulty the blackDifficulty to set
+	 */
+	public static void setBlackDifficulty(double blackDifficulty) {
+		config.blackDifficulty = blackDifficulty;
+		save();
+	}
+
+	/**
+	 * @return the whiteDifficulty
+	 */
+	public static double getWhiteDifficulty() {
+		return config.whiteDifficulty;
+	}
+
+	/**
+	 * Sets and writes whiteDifficulty to config file
+	 * @param whiteDifficulty the whiteDifficulty to set
+	 */
+	public static void setWhiteDifficulty(double whiteDifficulty) {
+		config.whiteDifficulty = whiteDifficulty;
+		save();
+	}
+	
 	
 	
 	// --- Instance members ---
@@ -136,6 +168,8 @@ public class Config {
 	private boolean highlightMoves;
 	private boolean isBlackComputerPlayer;
 	private boolean isWhiteComputerPlayer;
+	private double blackDifficulty;
+	private double whiteDifficulty;
 	
 	/**
 	 * Initialize with default values
@@ -145,6 +179,8 @@ public class Config {
 		highlightMoves = true;
 		isBlackComputerPlayer = false;
 		isWhiteComputerPlayer = false;
+		blackDifficulty = 0.5;
+		whiteDifficulty = 0.5;
 	}
 
 }

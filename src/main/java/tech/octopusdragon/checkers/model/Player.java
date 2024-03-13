@@ -1,7 +1,6 @@
 package tech.octopusdragon.checkers.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * The players in checkers
@@ -28,24 +27,6 @@ public class Player implements Serializable {
 	 */
 	public PlayerType getType() {
 		return type;
-	}
-	
-	
-	/**
-	 * Adds multiple pieces to the player's pieces
-	 * @param pieces The pieces to add
-	 */
-	public void addAllPieces(Collection<Piece> pieces) {
-		pieces.addAll(pieces);
-	}
-	
-	
-	/**
-	 * Removes multiple pieces from the player's collection
-	 * @param pieces The pieces to remove
-	 */
-	public void removePiece(Collection<Piece> pieces) {
-		pieces.removeAll(pieces);
 	}
 	
 	

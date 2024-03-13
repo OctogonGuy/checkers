@@ -566,4 +566,26 @@ public class Board implements Serializable {
 		return copy;
 	}
 	
+	
+	@Override
+	public String toString() {
+		String str = "";
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				Piece piece = pieces[i][j];
+				if (piece == null) {
+					str += " ";
+				}
+				else if (piece.getPlayerType() == PlayerType.BLACK) {
+					str += "B";
+				}
+				else {
+					str += "W";
+				}
+			}
+			str += "\n";
+		}
+		return str;
+	}
+	
 }

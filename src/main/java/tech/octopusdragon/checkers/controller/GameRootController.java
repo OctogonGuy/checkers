@@ -42,6 +42,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -64,6 +65,8 @@ public class GameRootController {
 	private static final double REMOVE_DURATION = 450;
 	// Size of the piece graphic of the message label in ems
 	private static final double MESSAGE_GRAPHIC_SIZE = 3;
+	// Time between frames of messages that animate
+	private static final long CHANGING_MESSAGE_TIMEOUT = 1000;
 	
 	
 	// --- Global variables ---
@@ -73,6 +76,7 @@ public class GameRootController {
 	private boolean dragging;		// Whether a drag gesture is occurring
 	private PieceGraphic draggedPiece;	// The piece on the board before drag
 	private PieceGraphic dragPiece;	// The graphic of a piece being dragged
+	private List<Animation> runningAnimations;	// Animations that are running
 	
 	
 	// --- GUI Components ---
@@ -89,6 +93,8 @@ public class GameRootController {
 	@FXML private CheckMenuItem highlightMovesMenuItem;
 	@FXML private CheckMenuItem blackComputerPlayerCheckMenuItem;
 	@FXML private CheckMenuItem whiteComputerPlayerCheckMenuItem;
+	@FXML private Slider blackDifficultySlider;
+	@FXML private Slider whiteDifficultySlider;
 	// End turn buttons
 	private Map<PlayerType, Button> endTurnButtons;
 	@FXML private Button topPlayerEndTurnButton;
@@ -112,6 +118,22 @@ public class GameRootController {
 		endTurnButtons = new HashMap<>();
 		endTurnButtons.put(Board.getTopPlayerType(), topPlayerEndTurnButton);
 		endTurnButtons.put(Board.getBottomPlayerType(), bottomPlayerEndTurnButton);
+		
+		// Set sliders
+		blackDifficultySlider.setValue(Config.getBlackDifficulty());
+		whiteDifficultySlider.setValue(Config.getWhiteDifficulty());
+		
+		// Bind sliders' disabled property to computer player selected property
+		blackDifficultySlider.disableProperty().bind(blackComputerPlayerCheckMenuItem.selectedProperty().not());
+		whiteDifficultySlider.disableProperty().bind(whiteComputerPlayerCheckMenuItem.selectedProperty().not());
+		
+		// Add listener to sliders that changes difficulty
+		blackDifficultySlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+			Config.setBlackDifficulty(newVal.doubleValue());
+		});
+		whiteDifficultySlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+			Config.setWhiteDifficulty(newVal.doubleValue());
+		});
 		
 		// Scale the grid to the container size
 		outerContainer.prefHeightProperty().bind(((Pane)root.getCenter()).heightProperty().subtract(Bindings.max(
@@ -181,6 +203,7 @@ public class GameRootController {
 		// Assign values to variables
 		selected = false;
 		selectedPos = new Position();
+		runningAnimations = new ArrayList<>();
 		
 		// Create a new board
 		boardContainer.getChildren().clear();
@@ -425,14 +448,7 @@ public class GameRootController {
 			// If player is computer, move for it
 			if (game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
 					game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer()) {
-				Platform.runLater(() -> {
-					Move computerMove = ComputerPlayer.getMove(game);
-					Animation moveAnimation = moveAnimation(computerMove);
-					moveAnimation.setOnFinished(e -> {
-						move(computerMove);
-					});
-					moveAnimation.play();
-				});
+				computerMove();
 			}
 			
 			// Otherwise, let human player move
@@ -480,19 +496,55 @@ public class GameRootController {
 		// If player is computer, move for it
 		if (game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
 				game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer()) {
-			Platform.runLater(() -> {
-				Move computerMove = ComputerPlayer.getMove(game);
-				Animation moveAnimation = moveAnimation(computerMove);
-				moveAnimation.setOnFinished(e -> {
-					move(computerMove);
-				});
-				moveAnimation.play();
-			});
+			computerMove();
 		}
 		
 		// Highlight movable pieces
 		deselect();
 		highlightMovablePieces();
+	}
+	
+	
+	/**
+	 * Makes computer player play move
+	 */
+	private void computerMove() {
+		Thread thread = new Thread(() -> {
+			Move computerMove = ComputerPlayer.getMove(game, computerDifficulty());
+			Platform.runLater(() -> {
+				Animation moveAnimation = moveAnimation(computerMove);
+				moveAnimation.setOnFinished(e -> {
+					move(computerMove);
+				});
+				displayMessage();
+				play(moveAnimation);
+			});
+		});
+		thread.setDaemon(true);
+		thread.start();
+
+		Thread messageThread = new Thread() {
+			public void run() {
+				int periods = 0;
+				while (thread.isAlive()) {
+					String suffix = "";
+					for (int i = 0; i < periods; i++) suffix += ".";
+					periods++;
+					if (periods > 3) periods = 0;
+					final String FINAL_SUFFIX = suffix;
+					Platform.runLater(() -> {
+						displayMessage("Computer player thinking" + FINAL_SUFFIX + "\t");
+					});
+					try {
+						Thread.sleep(CHANGING_MESSAGE_TIMEOUT);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		messageThread.setDaemon(true);
+		messageThread.start();
 	}
 	
 	
@@ -538,6 +590,19 @@ public class GameRootController {
 	
 	
 	/**
+	 * Displays a custom message
+	 * @param message The custom message
+	 */
+	private void displayMessage(String message) {
+		for (PlayerType playerType : PlayerType.values()) {
+			Label messageLabel = messageLabels.get(playerType);
+			
+			messageLabel.setText(message);
+		}
+	}
+	
+	
+	/**
 	 * Moves to the next player. This is only really called for variants in
 	 * which huffing is enforced as other variants automatically move to the
 	 * next player after a turn is over. If a piece did not capture when it was
@@ -553,7 +618,7 @@ public class GameRootController {
 			removeAnimation(pieceRow, pieceCol);
 		}
 		else {
-			delayedCaptureAnimation().play();
+			play(delayedCaptureAnimation());
 		}
 		
 		game.endTurn();
@@ -855,7 +920,31 @@ public class GameRootController {
 		board.removePiece(row, col);
 		
 		// Play the animations
-		ptrans.play();
+		play(ptrans);
+	}
+	
+	
+	/**
+	 * Plays an animation, adding it to the list of running animations when it
+	 * starts and removing it from the list when it finishes.
+	 * @param animation The animation to play
+	 */
+	private void play(Animation animation) {
+		// Wrap animation in outer animation so additional event can be added
+		ParallelTransition wrapper = new ParallelTransition(animation);
+		runningAnimations.add(animation);
+		wrapper.setOnFinished(event -> {
+			runningAnimations.remove(animation);
+		});
+		wrapper.play();
+	}
+	
+	
+	/**
+	 * @return Whether an animation is running
+	 */
+	private boolean isAnimationRunning() {
+		return !runningAnimations.isEmpty();
 	}
 	
 	
@@ -1006,7 +1095,7 @@ public class GameRootController {
 				moveAnimation.setOnFinished(e -> {
 					move(selectedPos.getRow(), selectedPos.getCol(), row, col);
 				});
-				moveAnimation.play();
+				play(moveAnimation);
 			}
 		}
 	}
@@ -1140,7 +1229,7 @@ public class GameRootController {
 					for (Capture capture : game.validCaptures(draggedPiece.getPiece())) {
 						if (capture.getToPos().getRow() == row && capture.getToPos().getCol() == col) {
 							Position capturedPos = capture.getCapturePos();
-							delayedCaptureAnimation(game.getBoard().getPiece(capturedPos)).play();
+							play(delayedCaptureAnimation(game.getBoard().getPiece(capturedPos)));
 							break;
 						}
 					}
@@ -1237,11 +1326,19 @@ public class GameRootController {
 	@FXML
 	private void toggleBlackComputerPlayer(ActionEvent event) {
 		Config.setBlackComputerPlayer(!Config.isBlackComputerPlayer());
+		if (game.getCurPlayer().getType() == PlayerType.BLACK && !isAnimationRunning()) {
+			removeHighlight();
+			computerMove();
+		}
 	}
 	
 	@FXML
 	private void toggleWhiteComputerPlayer(ActionEvent event) {
 		Config.setWhiteComputerPlayer(!Config.isWhiteComputerPlayer());
+		if (game.getCurPlayer().getType() == PlayerType.WHITE && !isAnimationRunning()) {
+			removeHighlight();
+			computerMove();
+		}
 	}
 	
 	
@@ -1300,8 +1397,13 @@ public class GameRootController {
 	 * Undoes the last move and updates the board to reflect it
 	 */
 	private void undoMove() {
+		if (isAnimationRunning()) return;
 		deselect();
-		game.undoMove();
+		game.undoTurn();
+		// If computer player, undo one more move
+		if (game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer() ||
+				game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer())
+			game.undoTurn();
 		refresh();
 		updatePlayer();
 	}
@@ -1310,8 +1412,9 @@ public class GameRootController {
 	 * Undoes all moves and updates the board to reflect it
 	 */
 	private void undoAllMoves() {
+		if (isAnimationRunning()) return;
 		deselect();
-		game.undoAllMoves();
+		game.undoAllTurns();
 		refresh();
 		updatePlayer();
 	}
@@ -1320,8 +1423,9 @@ public class GameRootController {
 	 * Goes forward a move and updates the board to reflect it
 	 */
 	private void redoMove() {
+		if (isAnimationRunning()) return;
 		deselect();
-		game.redoMove();
+		game.redoTurn();
 		refresh();
 		updatePlayer();
 	}
@@ -1330,10 +1434,24 @@ public class GameRootController {
 	 * Goes forward to the last move and updates the board to reflect it
 	 */
 	private void redoAllMoves() {
+		if (isAnimationRunning()) return;
 		deselect();
-		game.redoAllMoves();
+		game.redoAllTurns();
 		refresh();
 		updatePlayer();
+	}
+	
+	/**
+	 * @return The difficulty of the current computer player
+	 */
+	private double computerDifficulty() {
+		if (game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer())
+			return Config.getWhiteDifficulty();
+		
+		if (game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer())
+			return Config.getBlackDifficulty();
+		
+		return 0.0;
 	}
 	
 	
@@ -1344,6 +1462,7 @@ public class GameRootController {
 	 * Swaps the top and bottom player, reflecting the board layout
 	 */
 	public void invertBoard() {
+		if (isAnimationRunning()) return;
 		deselect();
 		game.getBoard().invert();
 		board.invert();

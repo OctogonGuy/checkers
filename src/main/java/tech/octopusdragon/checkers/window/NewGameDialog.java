@@ -28,6 +28,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
@@ -57,6 +58,8 @@ public class NewGameDialog extends Dialog<Checkers> {
     @FXML private RadioButton bottomPlayerWhiteRadioButton;
     @FXML private CheckBox blackComputerPlayerCheckBox;
     @FXML private CheckBox whiteComputerPlayerCheckBox;
+    @FXML private Slider blackDifficultySlider;
+    @FXML private Slider whiteDifficultySlider;
     private Checkers game;
 	
     
@@ -125,6 +128,22 @@ public class NewGameDialog extends Dialog<Checkers> {
 		// Bind top/bottom player radio buttons' selected property to inverse
 		topPlayerBlackRadioButton.selectedProperty().bindBidirectional(bottomPlayerWhiteRadioButton.selectedProperty());
 		bottomPlayerBlackRadioButton.selectedProperty().bindBidirectional(topPlayerWhiteRadioButton.selectedProperty());
+		
+		// Set sliders
+		blackDifficultySlider.setValue(Config.getBlackDifficulty());
+		whiteDifficultySlider.setValue(Config.getWhiteDifficulty());
+		
+		// Bind sliders' disabled property to computer player selected property
+		blackDifficultySlider.disableProperty().bind(blackComputerPlayerCheckBox.selectedProperty().not());
+		whiteDifficultySlider.disableProperty().bind(whiteComputerPlayerCheckBox.selectedProperty().not());
+		
+		// Add listener to sliders that changes difficulty
+		blackDifficultySlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+			Config.setBlackDifficulty(newVal.doubleValue());
+		});
+		whiteDifficultySlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+			Config.setWhiteDifficulty(newVal.doubleValue());
+		});
 		
 		// Set initially selected check and radio buttons
 		highlightMovesCheckBox.setSelected(Config.isHighlightMoves());

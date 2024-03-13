@@ -2,10 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 
@@ -51,7 +54,18 @@
                   <Menu mnemonicParsing="false" text="Computer Player">
                     <items>
                         <CheckMenuItem fx:id="blackComputerPlayerCheckMenuItem" mnemonicParsing="false" onAction="#toggleBlackComputerPlayer" text="Black" />
+                        <CustomMenuItem mnemonicParsing="false" text="Difficulty">
+                           <content>
+                              <Slider fx:id="blackDifficultySlider" max="1.0" prefWidth="50.0" />
+                           </content>
+                        </CustomMenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
                         <CheckMenuItem fx:id="whiteComputerPlayerCheckMenuItem" mnemonicParsing="false" onAction="#toggleWhiteComputerPlayer" text="White" />
+                        <CustomMenuItem mnemonicParsing="false" text="Difficulty">
+                           <content>
+                              <Slider fx:id="whiteDifficultySlider" max="1.0" prefWidth="50.0" />
+                           </content>
+                        </CustomMenuItem>
                     </items>
                   </Menu>
               </items>

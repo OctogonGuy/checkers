@@ -1,6 +1,5 @@
 package tech.octopusdragon.checkers;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -32,19 +31,18 @@ public class CheckersApplication extends Application {
 	public void start(Stage primaryStage) {
 		Checkers game;
 		
-		// If there is no userdata, show the new game dialog
-		File userdata = new File(USERDATA);
-		if (!userdata.exists()) {
+		// Try to load the saved game
+		try {
+			game = Checkers.deserialize(USERDATA);
+		}
+			
+		// If there is no userdata or some other error, show the new game dialog
+		catch (Exception e) {
 			Optional<Checkers> result = new NewGameDialog().showAndWait();
 			if (!result.isPresent()) {
 				System.exit(0);
 			}
 			game = result.get();
-		}
-		
-		// Otherwise, load the saved game
-		else {
-			game = Checkers.deserialize(USERDATA);
 		}
 		
 		// Set the scene

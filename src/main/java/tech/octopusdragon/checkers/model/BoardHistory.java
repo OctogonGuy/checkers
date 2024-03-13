@@ -23,6 +23,8 @@ public class BoardHistory implements Serializable {
 	private int index;	// Current index in the history
 	// Keeps track of the number of occurrences of each board state
 	private Map<BoardState, Integer> boardCounts;
+	// History of list of captured positions
+	private List<Position[]> capturedPosListHistory;
 	
 	
 	/**
@@ -31,6 +33,7 @@ public class BoardHistory implements Serializable {
 	public BoardHistory() {
 		boardHistory = new ArrayList<BoardState>();
 		boardCounts = new HashMap<BoardState, Integer>();
+		capturedPosListHistory = new ArrayList<Position[]>();
 	}
 	
 	
@@ -40,8 +43,9 @@ public class BoardHistory implements Serializable {
 	 * then it deletes all elements after this new one
 	 * @param board The current board
 	 * @param player The current player
+	 * @param capturedPostArr Current list of captured positions
 	 */
-	public void push(Board board, Player player) {
+	public void push(Board board, Player player, Position[] capturedPosArr) {
 		while (boardHistory.size() > index + 1) {
 			
 			// Remove from counts map and update count
@@ -49,10 +53,14 @@ public class BoardHistory implements Serializable {
 			boardCounts.put(boardHistory.get(index + 1), count - 1);
 			
 			boardHistory.remove(index + 1);
+			
+			capturedPosListHistory.remove(index + 1);
 		}
 		
 		BoardState boardState = new BoardState(board, player);
 		boardHistory.add(new BoardState(board, player));
+
+		capturedPosListHistory.add(capturedPosArr);
 		
 		// Add to counts map and update count
 		Integer count = boardCounts.get(boardState);
@@ -68,12 +76,28 @@ public class BoardHistory implements Serializable {
 	
 	
 	/**
+	 * @return The current board state
+	 */
+	public BoardState getCurrent() {
+		return boardHistory.get(index);
+	}
+	
+	
+	/**
+	 * @return An array of captured positions at this index
+	 */
+	public Position[] getCurrentCapturedPosArr() {
+		return capturedPosListHistory.get(index);
+	}
+	
+	
+	/**
 	 * Decrements the history index and returns the board state at that index.
 	 * Does nothing if the current index is 0.
 	 * @return The board state
 	 */
 	public BoardState previous() {
-		if (index == 0) return null;
+		if (index <= 0) return null;
 		return boardHistory.get(--index);
 	}
 	
@@ -85,7 +109,7 @@ public class BoardHistory implements Serializable {
 	 * @return The board state
 	 */
 	public BoardState next() {
-		if (index >= boardHistory.size()) return null;
+		if (index >= boardHistory.size() - 1) return null;
 		return boardHistory.get(++index);
 	}
 	
@@ -118,6 +142,17 @@ public class BoardHistory implements Serializable {
 	 */
 	public int highestCount() {
 		return Collections.max(boardCounts.values());
+	}
+	
+	
+	@Override
+	public BoardHistory clone() {
+		BoardHistory copy = new BoardHistory();
+		copy.boardHistory = new ArrayList<>(this.boardHistory);
+		copy.index = this.index;
+		copy.boardCounts = new HashMap<>(this.boardCounts);
+		copy.capturedPosListHistory = new ArrayList<>(this.capturedPosListHistory);
+		return copy;
 	}
 
 }

@@ -141,6 +141,25 @@
 
 
 
+.slider .track {
+	-fx-background-color: #d9bca5;
+	-fx-border-color: #696969;
+	-fx-border-radius: 2px;
+}
+
+.slider .thumb {
+	-thumb-color: #c6956c;
+	-fx-background-color: radial-gradient(radius 100%, -thumb-color, derive(-thumb-color, -40%));
+	-fx-border-color: #696969;
+	-fx-border-radius: 50%;
+}
+
+.slider .thumb:hover {
+	-fx-background-color: radial-gradient(radius 100%, derive(-thumb-color, 20%), derive(-thumb-color, -20%));
+}
+
+
+
 .radio-button, .check-box {
 	-main-color: -menu-color-2;
 	-sub-color: white;

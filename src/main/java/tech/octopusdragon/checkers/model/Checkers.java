@@ -27,7 +27,7 @@ import tech.octopusdragon.checkers.model.rules.KingType;
  *
  */
 public class Checkers implements Serializable {
-	private static final long serialVersionUID = -3394984252759443037L;
+	private static final long serialVersionUID = -3394984352759443037L;
 	
 	// --- Instance variables ---
 	private Variant variant;			// The variant to play
@@ -35,9 +35,8 @@ public class Checkers implements Serializable {
 	private Player blackPlayer;			// The black player
 	private Player whitePlayer;			// The white player
 	private Player curPlayer;			// The current player
-	private List<Piece> pieces;			// The pieces in the game
 	private Piece capturingPiece;		// Piece in a capturing sequence
-	private List<Piece> capturedPieces;	// Pieces captured so far this turn
+	private List<Position> capturedPosList;	// Pieces positions so far this turn
 	private AbsoluteDirection lastDir;	// Last direction moved this turn
 	private BoardHistory history;		// History of previous of board states
 	private int kingVKingTurnsLeft;		// The number of turns left until draw
@@ -66,19 +65,9 @@ public class Checkers implements Serializable {
 		board = new Board(variant.getRows(), variant.getCols(), variant.getBoardPattern(),
 				variant.getNumPieces(), variant.getStartingPositions());
 		
-		// Add the pieces on the board to the list of pieces
-		pieces = new ArrayList<Piece>();
-		for (int i = 0; i < variant.getRows(); i++) {
-			for (int j = 0; j < variant.getCols(); j++) {
-				Piece curPiece = board.getPiece(i, j);
-				if (curPiece == null) continue;
-				pieces.add(curPiece);
-			}
-		}
-		
 		// No pieces have moved yet
 		capturingPiece = null;
-		capturedPieces = new ArrayList<Piece>();
+		capturedPosList = new ArrayList<>();
 		lastDir = null;
 		
 		
@@ -98,7 +87,7 @@ public class Checkers implements Serializable {
 		// Initialize board history
 		if (curPlayer != null) {
 			history = new BoardHistory();
-			history.push(board, curPlayer);
+			history.push(board, curPlayer, new Position[0]);
 		}
 		
 		
@@ -136,19 +125,15 @@ public class Checkers implements Serializable {
 	/**
 	 * Returns a deserialized game
 	 * @return Deserialized game
+	 * @throws IOException if an IO error occurred or ClassNotFoundException if
+	 * there were problems loading this class
 	 */
-	public static Checkers deserialize(String filename) {
+	public static Checkers deserialize(String filename) throws IOException, ClassNotFoundException {
 		Checkers object = null;
-		try {
-			FileInputStream inStream = new FileInputStream("userdata/checkers.ser");
-			ObjectInputStream objectInputFile = new ObjectInputStream(inStream);
-			object = (Checkers) objectInputFile.readObject();
-			objectInputFile.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileInputStream inStream = new FileInputStream("userdata/checkers.ser");
+		ObjectInputStream objectInputFile = new ObjectInputStream(inStream);
+		object = (Checkers) objectInputFile.readObject();
+		objectInputFile.close();
 		return object;
 	}
 	
@@ -170,9 +155,29 @@ public class Checkers implements Serializable {
 	
 	
 	/**
+	 * @return A list of all pieces on the board
+	 */
+	public List<Piece> getPieces() {
+		List<Piece> pieces = new ArrayList<>();
+		for (int i = 0; i < variant.getRows(); i++) {
+			for (int j = 0; j < variant.getCols(); j++) {
+				Piece curPiece = board.getPiece(i, j);
+				if (curPiece == null) continue;
+				pieces.add(curPiece);
+			}
+		}
+		return pieces;
+	}
+	
+	
+	/**
 	 * @return A list of pieces captured so far this turn
 	 */
 	public List<Piece> getCapturedPieces() {
+		List<Piece> capturedPieces = new ArrayList<>();
+		for (Position pos : capturedPosList) {
+			capturedPieces.add(board.getPiece(pos));
+		}
 		return capturedPieces;
 	}
 	
@@ -193,7 +198,7 @@ public class Checkers implements Serializable {
 		
 		// Initialize board history
 		history = new BoardHistory();
-		history.push(board, curPlayer);
+		history.push(board, curPlayer, new Position[0]);
 	}
 	
 	
@@ -298,9 +303,6 @@ public class Checkers implements Serializable {
 		
 		moved = false;
 		captured = false;
-		
-		// Add this board state to the board history
-		history.push(board, curPlayer);
 	}
 	
 	
@@ -315,7 +317,6 @@ public class Checkers implements Serializable {
 		// last moved piece from the board
 		if (missedCapture) {
 			board.remove(missedCapturePiece);
-			pieces.remove(missedCapturePiece);
 		}
 		missedCapture = false;
 		missedCapturePiece = null;
@@ -553,11 +554,10 @@ public class Checkers implements Serializable {
 			Piece capturedPiece = capturedPiece(piece, toRow, toCol);
 			// If it should be removed immediately, remove a captured piece
 			if (!variant.isRemovePiecesImmediately()) {
-				capturedPieces.add(capturedPiece);
+				capturedPosList.add(board.getPosition(capturedPiece));
 			}
 			// Otherwise, just mark it to be removed
 			else {
-				pieces.remove(capturedPiece);
 				board.remove(capturedPiece);
 			}
 			
@@ -626,6 +626,10 @@ public class Checkers implements Serializable {
 				nextPlayer();
 			}
 		}
+		
+		
+		// Add this board state to the board history
+		history.push(board, curPlayer, capturedPosList.toArray(new Position[0]));
 	}
 	
 	
@@ -633,12 +637,11 @@ public class Checkers implements Serializable {
 	 * Terminate a player's movement sequence
 	 */
 	private void terminateSequence() {
-		for (Piece capturedPiece: capturedPieces) {
-			pieces.remove(capturedPiece);
-			board.remove(capturedPiece);
+		for (Position capturedPos: capturedPosList) {
+			board.remove(board.getPiece(capturedPos));
 		}
 		capturingPiece = null;
-		capturedPieces.clear();
+		capturedPosList.clear();
 		lastDir = null;
 		
 		// --- Special rules ---
@@ -662,31 +665,44 @@ public class Checkers implements Serializable {
 	/**
 	 * Changes the current player and board layout
 	 * @param state The state of the game board
+	 * @param capturedPosArr An array of captured positions during this state
 	 */
-	private void setState(BoardState state) {
+	private void setState(BoardState state, Position[] capturedPosArr) {
 		if (state == null) return;
 		
 		curPlayer = player(state.playerType());
 		board = new Board(state, variant.getBoardPattern());
-		
-		// Add the pieces on the board to the list of pieces
-		pieces.clear();
-		for (int i = 0; i < variant.getRows(); i++) {
-			for (int j = 0; j < variant.getCols(); j++) {
-				Piece curPiece = board.getPiece(i, j);
-				if (curPiece == null) continue;
-				pieces.add(curPiece);
-			}
-		}
+		capturedPosList.clear();
+		capturedPosList.addAll(Arrays.asList(capturedPosArr));
+	}
+	
+	
+	/**
+	 * @return The board state history
+	 */
+	public BoardHistory getHistory() {
+		return history;
 	}
 	
 	
 	/**
 	 * Undoes the last move made and restores the board to the state it was in
-	 * last turn
+	 * last move
 	 */
 	public void undoMove() {
-		setState(history.previous());
+		setState(history.previous(), history.getCurrentCapturedPosArr());
+	}
+	
+	
+	/**
+	 * Undoes the last turn made and restores the board to the state it was in
+	 * last turn
+	 */
+	public void undoTurn() {
+		Player lastMovedPlayer = getCurPlayer();
+		while (getCurPlayer() == lastMovedPlayer) {
+			setState(history.previous(), history.getCurrentCapturedPosArr());
+		}
 	}
 	
 	
@@ -694,26 +710,29 @@ public class Checkers implements Serializable {
 	 * Undoes all moves and restores the board to the state it was in at the
 	 * beginning of the game
 	 */
-	public void undoAllMoves() {
-		setState(history.first());
+	public void undoAllTurns() {
+		setState(history.first(), history.getCurrentCapturedPosArr());
 	}
 	
 	
 	/**
-	 * Goes forward a move and restores the board to the state it was in during
+	 * Goes forward a turn and restores the board to the state it was in during
 	 * that turn
 	 */
-	public void redoMove() {
-		setState(history.next());
+	public void redoTurn() {
+		Player lastMovedPlayer = getCurPlayer();
+		while (getCurPlayer() == lastMovedPlayer) {
+			setState(history.next(), history.getCurrentCapturedPosArr());
+		}
 	}
 	
 	
 	/**
-	 * Goes forward all moves and restores the board to the state it was most
+	 * Goes forward all turns and restores the board to the state it was most
 	 * recently in
 	 */
-	public void redoAllMoves() {
-		setState(history.last());
+	public void redoAllTurns() {
+		setState(history.last(), history.getCurrentCapturedPosArr());
 	}
 	
 
@@ -735,11 +754,10 @@ public class Checkers implements Serializable {
 		Piece thisCapturedPiece = capturedPiece(piece, toRow, toCol);
 		// If it should be removed immediately, remove a captured piece
 		if (!variant.isRemovePiecesImmediately()) {
-			capturedPieces.add(thisCapturedPiece);
+			capturedPosList.add(board.getPosition(thisCapturedPiece));
 		}
 		// Otherwise, just mark it to be removed
 		else {
-			pieces.remove(thisCapturedPiece);
 			board.remove(thisCapturedPiece);
 		}
 		
@@ -776,12 +794,11 @@ public class Checkers implements Serializable {
 		// If player's sequence has been terminated, clear the captured pieces,
 		// if there are any, and move on to the next player
 		if (terminateSequence) {
-			for (Piece capturedPiece: capturedPieces) {
-				pieces.remove(capturedPiece);
-				board.remove(capturedPiece);
+			for (Position capturedPos: capturedPosList) {
+				board.remove(board.getPiece(capturedPos));
 			}
 			capturingPiece = null;
-			capturedPieces.clear();
+			capturedPosList.clear();
 			lastDir = null;
 			
 			nextPlayer();
@@ -1026,7 +1043,7 @@ public class Checkers implements Serializable {
 	 */
 	public List<Piece> movablePieces() {
 		List<Piece> movablePieces = new ArrayList<>();
-		for (Piece piece : pieces) {
+		for (Piece piece : getPieces()) {
 			if (canMove(piece)) {
 				movablePieces.add(piece);
 			}
@@ -1184,7 +1201,7 @@ public class Checkers implements Serializable {
 					moves.add(new Capture(board.getPosition(piece), capturePos, board.getPosition(capturePos.getCapturedPiece())));
 				}
 				for (Position pos : validMovementPositions(piece)) {
-					moves.add(new Capture(board.getPosition(piece), pos));
+					moves.add(new Move(board.getPosition(piece), pos));
 				}
 			}
 		}
@@ -1195,7 +1212,7 @@ public class Checkers implements Serializable {
 		}
 		else {
 			for (Position pos : validMovementPositions(piece)) {
-				moves.add(new Capture(board.getPosition(piece), pos));
+				moves.add(new Move(board.getPosition(piece), pos));
 			}
 		}
 		return moves;
@@ -1550,7 +1567,7 @@ public class Checkers implements Serializable {
 				// Stop adding position(s) if the piece at the position is in
 				// the list of captured pieces or is a player piece
 				if (board.getPiece(position) != null &&
-						(capturedPieces.contains(board.getPiece(position)) ||
+						(capturedPosList.contains(position) ||
 						board.getPiece(position).getPlayerType() == piece.getPlayerType())) {
 					break;
 				}
@@ -1856,27 +1873,39 @@ public class Checkers implements Serializable {
 		
 		copy.board = this.board.clone();
 		
-		copy.blackPlayer = this.blackPlayer;
-		copy.whitePlayer = this.whitePlayer;
-		copy.curPlayer = this.curPlayer;
+		copy.blackPlayer = this.blackPlayer.clone();
+		copy.whitePlayer = this.whitePlayer.clone();
+		copy.curPlayer = curPlayer == blackPlayer ? copy.blackPlayer : copy.whitePlayer;
+		copy.higherKingPlayer = higherKingPlayer == blackPlayer ? copy.blackPlayer : copy.whitePlayer;
 		
-		copy.pieces = new ArrayList<Piece>();
-		copy.capturedPieces = new ArrayList<Piece>();
+		copy.capturedPosList = new ArrayList<>();
 		
 		// Add pieces to pieces and captured pieces
 		for (int i = 0; i < variant.getRows(); i++) {
 			for (int j = 0; j < variant.getCols(); j++) {
 				Piece curPiece = this.board.getPiece(i, j);
-				if (this.pieces.contains(curPiece)) {
-					copy.pieces.add(copy.board.getPiece(i, j));
+				Piece copyPiece = copy.board.getPiece(i, j);
+				if (this.capturedPosList.contains(board.getPosition(curPiece))) {
+					copy.capturedPosList.add(board.getPosition(copyPiece));
 				}
-				if (this.capturedPieces.contains(curPiece)) {
-					copy.capturedPieces.add(copy.board.getPiece(i, j));
+				if (curPiece == capturingPiece) {
+					copy.capturingPiece = copyPiece;
+				}
+				if (curPiece == missedCapturePiece) {
+					copy.missedCapturePiece = copyPiece;
 				}
 			}
 		}
 		
 		copy.lastDir = this.lastDir;
+		
+		copy.history = this.history.clone();
+		
+		copy.kingVKingTurnsLeft = this.kingVKingTurnsLeft;
+		copy.kingVKingStarted = this.kingVKingStarted;
+		copy.missedCapture = this.missedCapture;
+		copy.moved = this.moved;
+		copy.captured = this.captured;
 		
 		return copy;
 	}

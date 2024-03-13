@@ -93,5 +93,27 @@ public class BoardState implements Serializable {
 		result = prime * result + Objects.hash(playerType);
 		return result;
 	}
+	
+	
+	@Override
+	public String toString() {
+		String str = "";
+		for (int i = 0; i < pieceTypes.length; i++) {
+			for (int j = 0; j < pieceTypes[i].length; j++) {
+				PieceType pieceType = pieceTypes[i][j];
+				if (pieceType == null) {
+					str += " ";
+				}
+				else if (pieceType == PieceType.BLACK_KING || pieceType == PieceType.BLACK_MAN) {
+					str += "B";
+				}
+				else {
+					str += "W";
+				}
+			}
+			str += "\n";
+		}
+		return str;
+	}
 
 }

@@ -5,10 +5,12 @@
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -24,13 +26,14 @@
             <GridPane id="options-box" VBox.vgrow="NEVER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="23.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints vgrow="SOMETIMES" />
                 <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -42,15 +45,27 @@
                         <ToggleGroup fx:id="blackTopOrBottom" />
                      </toggleGroup></RadioButton>
                   <RadioButton fx:id="bottomPlayerBlackRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Bottom" toggleGroup="$blackTopOrBottom" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="White" GridPane.rowIndex="2" />
-                  <CheckBox fx:id="blackComputerPlayerCheckBox" mnemonicParsing="false" onAction="#toggleBlackPlayerComputer" text="Computer" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <CheckBox fx:id="whiteComputerPlayerCheckBox" mnemonicParsing="false" onAction="#toggleWhitePlayerComputer" text="Computer" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <RadioButton fx:id="topPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Label text="White" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="blackComputerPlayerCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#toggleBlackPlayerComputer" text="Computer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="whiteComputerPlayerCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#toggleWhitePlayerComputer" text="Computer" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <RadioButton fx:id="topPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <toggleGroup>
                         <ToggleGroup fx:id="whiteTopOrBottom" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="bottomPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToBlack" text="Bottom" toggleGroup="$whiteTopOrBottom" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <RadioButton fx:id="bottomPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToBlack" text="Bottom" toggleGroup="$whiteTopOrBottom" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <HBox GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <children>
+                        <Label text="Difficulty" />
+                        <Slider fx:id="blackDifficultySlider" max="1.0" prefWidth="50.0" />
+                     </children>
+                  </HBox>
+                  <HBox GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <children>
+                        <Label text="Difficulty" />
+                        <Slider fx:id="whiteDifficultySlider" max="1.0" prefWidth="50.0" />
+                     </children>
+                  </HBox>
                </children>
             </GridPane>
             <TreeView id="variant-list" fx:id="variantList" VBox.vgrow="ALWAYS" />
