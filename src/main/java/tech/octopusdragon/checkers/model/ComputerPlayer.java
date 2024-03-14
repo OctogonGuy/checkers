@@ -2,6 +2,8 @@ package tech.octopusdragon.checkers.model;
 
 import java.util.Random;
 
+import tech.octopusdragon.checkers.model.rules.KingType;
+
 /**
  * AI algorithms to make moves. Difficulty determines the chance of whether a
  * random move is made or a move according to the minimax algorithm is made as
@@ -11,8 +13,8 @@ import java.util.Random;
  */
 public class ComputerPlayer {
 	
-	private static int MIN_DEPTH = 3;	// Minimum search depth for minimax
-	private static int MAX_DEPTH = 9;	// Maximum search depth for minimax
+	private static int MIN_DEPTH = 2;	// Minimum search depth for minimax
+	private static int MAX_DEPTH = 10;	// Maximum search depth for minimax
 	
 	/**
 	 * Returns the computer player's chosen move
@@ -63,7 +65,13 @@ public class ComputerPlayer {
 		// rules and/or larger boards take too long to compute
 		if (game.getVariant().hasQuantityRule())
 			startingDepth--;
-		startingDepth -= game.getVariant().getNumPieces();
+		startingDepth -= game.getVariant().getNumPieces() / 10;
+		startingDepth -= (game.getVariant().getManMovementDirections().length +
+				game.getVariant().getKingMovementDirections().length +
+				game.getVariant().getManCaptureDirections().length +
+				game.getVariant().getKingCaptureDirections().length) / 4;
+		if (game.getVariant().getKingType() != KingType.SHORT)
+			startingDepth /= 2;
 		startingDepth = Math.max(startingDepth, MIN_DEPTH);
 		
 		Checkers gameCopy = game.clone();

@@ -26,7 +26,7 @@ public class BoardHistory implements Serializable {
 	// History of list of captured positions
 	private List<Position[]> capturedPosListHistory;
 	// History of capturing piece
-	private List<Piece> capturingPieceHistory;
+	private List<Position> capturingPiecePosHistory;
 	
 	
 	/**
@@ -36,7 +36,7 @@ public class BoardHistory implements Serializable {
 		boardHistory = new ArrayList<BoardState>();
 		boardCounts = new HashMap<BoardState, Integer>();
 		capturedPosListHistory = new ArrayList<Position[]>();
-		capturingPieceHistory = new ArrayList<Piece>();
+		capturingPiecePosHistory = new ArrayList<Position>();
 	}
 	
 	
@@ -47,9 +47,9 @@ public class BoardHistory implements Serializable {
 	 * @param board The current board
 	 * @param player The current player
 	 * @param capturedPosArr Current list of captured positions
-	 * @param capturingPiece The capturingPiece
+	 * @param capturingPiecePos The capturingPiece position
 	 */
-	public void push(Board board, Player player, Position[] capturedPosArr, Piece capturingPiece) {
+	public void push(Board board, Player player, Position[] capturedPosArr, Position capturingPiecePos) {
 		while (boardHistory.size() > index + 1) {
 			
 			// Remove from counts map and update count
@@ -60,7 +60,7 @@ public class BoardHistory implements Serializable {
 			
 			capturedPosListHistory.remove(index + 1);
 			
-			capturingPieceHistory.remove(index + 1);
+			capturingPiecePosHistory.remove(index + 1);
 		}
 		
 		BoardState boardState = new BoardState(board, player);
@@ -68,7 +68,7 @@ public class BoardHistory implements Serializable {
 
 		capturedPosListHistory.add(capturedPosArr);
 		
-		capturingPieceHistory.add(capturingPiece);
+		capturingPiecePosHistory.add(capturingPiecePos);
 		
 		// Add to counts map and update count
 		Integer count = boardCounts.get(boardState);
@@ -102,8 +102,8 @@ public class BoardHistory implements Serializable {
 	/**
 	 * @return The current capturing piece
 	 */
-	public Piece getCurrentCapturingPiece() {
-		return capturingPieceHistory.get(index);
+	public Position getCurrentCapturingPiecePos() {
+		return capturingPiecePosHistory.get(index);
 	}
 	
 	
@@ -176,7 +176,7 @@ public class BoardHistory implements Serializable {
 		copy.index = this.index;
 		copy.boardCounts = new HashMap<>(this.boardCounts);
 		copy.capturedPosListHistory = new ArrayList<>(this.capturedPosListHistory);
-		copy.capturingPieceHistory = new ArrayList<>(this.capturingPieceHistory);
+		copy.capturingPiecePosHistory = new ArrayList<>(this.capturingPiecePosHistory);
 		return copy;
 	}
 
