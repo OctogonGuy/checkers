@@ -6,6 +6,7 @@ package tech.octopusdragon.checkers.model;
  *
  */
 public class CapturePosition extends Position {
+	private static final long serialVersionUID = -8855539757921597192L;
 	
 	private Piece capturedPiece;	// The captured piece
 	

@@ -7,6 +7,7 @@ package tech.octopusdragon.checkers.model;
  *
  */
 public class MaximumCapturePosition extends CapturePosition {
+	private static final long serialVersionUID = -3039223300143885678L;
 	
 	private int maxCaptureValue;	// Maximum capture value
 	
