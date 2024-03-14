@@ -494,14 +494,17 @@ public class GameRootController {
 		}
 		
 		// If player is computer, move for it
-		if (game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
+		if (!game.isOver() &&
+				game.getCurPlayer().getType() == PlayerType.WHITE && Config.isWhiteComputerPlayer() ||
 				game.getCurPlayer().getType() == PlayerType.BLACK && Config.isBlackComputerPlayer()) {
 			computerMove();
 		}
 		
 		// Highlight movable pieces
 		deselect();
-		highlightMovablePieces();
+		if (!game.isOver()) {
+			highlightMovablePieces();
+		}
 	}
 	
 	
