@@ -70,14 +70,20 @@
 	-fx-padding: 0;
 }
 
-#variant-info-dialog #info {
+#variant-info-dialog #info, #custom-game-dialog #info {
 	-fx-background-color: -background-color;
 	-fx-padding: 8px 12px;
 	-fx-spacing: 14px;
 }
 
-#variant-info-dialog #info #details-table {
+#variant-info-dialog #info #details-table, #custom-game-dialog #table {
 	-fx-padding: 0 10px 0 0;
+}
+
+#custom-game-dialog #details-table, #custom-game-dialog #details-table * {
+	-fx-hgap: 5;
+	-fx-vgap: 7;
+	-fx-spacing: 3;
 }
 
 .choice-dialog .content {
@@ -90,6 +96,10 @@
 
 .choice-dialog:header .header-panel {
     -fx-background-color: transparent;
+}
+
+.borderless {
+	-fx-border-width: 0;
 }
 
 
@@ -213,6 +223,55 @@
 	-fx-background-insets: 0;
 }
 
+.spinner {
+	-main-color: -menu-color-2;
+	-sub-color: white;
+	-radio-color: linear-gradient(-menu-color-2, derive(-menu-color-2, -8%));
+	-focus-color: -menu-color-2;
+	-dot-color: #3b3b3b;
+	-border-color: #1a1a1a;
+	-fx-focus-color: -main-color;
+	-fx-border-color: -border-color;
+	-fx-border-radius: 3;
+	-fx-base: -main-color;
+}
+.spinner:focused,
+.spinner:focused .text-field {
+	-fx-background-color: -sub-color;
+}
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-body-color: -radio-color;
+}
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+	-radio-color: linear-gradient(derive(-menu-color-2, 20%), -menu-color-2);
+}
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+	-radio-color: linear-gradient(derive(-menu-color-2, -8%), derive(-menu-color-2, -14%));
+}
+
+.choice-box {
+	-main-color: -menu-color-2;
+	-sub-color: white;
+	-radio-color: linear-gradient(-menu-color-2, derive(-menu-color-2, -8%));
+	-focus-color: -menu-color-2;
+	-dot-color: #3b3b3b;
+	-border-color: #1a1a1a;
+	-fx-background-color: -border-color, -focus-color, -radio-color;
+	-fx-background-insets: 0, 1, 2;
+}
+.choice-box:focused {
+	-focus-color: -sub-color;
+}
+.choice-box:hover {
+	-radio-color: linear-gradient(derive(-menu-color-2, 20%), -menu-color-2);
+}
+.choice-box:pressed {
+	-radio-color: linear-gradient(derive(-menu-color-2, -8%), derive(-menu-color-2, -14%));
+}
+
 
 
 .tree-view {
@@ -254,7 +313,8 @@
 .menu-bar .menu-button:focused,
 .menu-bar .menu-item:focused:hover,
 .combo-box:focused .list-view .list-cell:hover,
-.combo-box:focused .list-view .list-cell:selected {
+.combo-box:focused .list-view .list-cell:selected,
+.context-menu .menu-item:focused {
 	-fx-background-insets: 0, 1, 2;
 	-fx-background-color:
 		-selected-color,

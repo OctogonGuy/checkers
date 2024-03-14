@@ -558,9 +558,16 @@ public class GameRootController {
 
 			// Display on player labels
 			Platform.runLater(() -> {
-				messageLabel.setGraphic(new PieceGraphic(new Piece(
-						game.getCurPlayer().getType().manPiece()),
-						messageLabel.getFont().getSize() * MESSAGE_GRAPHIC_SIZE));
+				if (!game.isOver()) {
+					messageLabel.setGraphic(new PieceGraphic(new Piece(
+							game.getCurPlayer().getType().manPiece()),
+							messageLabel.getFont().getSize() * MESSAGE_GRAPHIC_SIZE));
+				}
+				else {
+					messageLabel.setGraphic(new PieceGraphic(new Piece(
+							playerType.manPiece()),
+							messageLabel.getFont().getSize() * MESSAGE_GRAPHIC_SIZE));
+				}
 			});
 			
 			if (game.isOver()) {

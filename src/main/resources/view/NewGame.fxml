@@ -19,6 +19,7 @@
       <ButtonType fx:id="closeButtonType" buttonData="CANCEL_CLOSE" text="Close" />
       <ButtonType fx:id="playButtonType" buttonData="OK_DONE" text="Play" />
       <ButtonType fx:id="infoButtonType" buttonData="HELP_2" text="Info" />
+      <ButtonType fx:id="customGameButtonType" buttonData="OTHER" text="Custom" />
    </buttonTypes>
    <content>
       <VBox styleClass="content">
@@ -57,13 +58,13 @@
                   <HBox GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
                         <Label text="Difficulty" />
-                        <Slider fx:id="blackDifficultySlider" max="1.0" prefWidth="50.0" />
+                        <Slider fx:id="blackDifficultySlider" max="1.0" prefWidth="80.0" />
                      </children>
                   </HBox>
                   <HBox GridPane.columnIndex="2" GridPane.rowIndex="4">
                      <children>
                         <Label text="Difficulty" />
-                        <Slider fx:id="whiteDifficultySlider" max="1.0" prefWidth="50.0" />
+                        <Slider fx:id="whiteDifficultySlider" max="1.0" prefWidth="80.0" />
                      </children>
                   </HBox>
                </children>

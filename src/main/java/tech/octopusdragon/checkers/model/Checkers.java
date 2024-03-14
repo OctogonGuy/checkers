@@ -87,7 +87,7 @@ public class Checkers implements Serializable {
 		// Initialize board history
 		if (curPlayer != null) {
 			history = new BoardHistory();
-			history.push(board, curPlayer, new Position[0]);
+			history.push(board, curPlayer, new Position[0], capturingPiece);
 		}
 		
 		
@@ -198,7 +198,7 @@ public class Checkers implements Serializable {
 		
 		// Initialize board history
 		history = new BoardHistory();
-		history.push(board, curPlayer, new Position[0]);
+		history.push(board, curPlayer, new Position[0], capturingPiece);
 	}
 	
 	
@@ -629,7 +629,7 @@ public class Checkers implements Serializable {
 		
 		
 		// Add this board state to the board history
-		history.push(board, curPlayer, capturedPosList.toArray(new Position[0]));
+		history.push(board, curPlayer, capturedPosList.toArray(new Position[0]), capturingPiece);
 	}
 	
 	
@@ -667,13 +667,14 @@ public class Checkers implements Serializable {
 	 * @param state The state of the game board
 	 * @param capturedPosArr An array of captured positions during this state
 	 */
-	private void setState(BoardState state, Position[] capturedPosArr) {
+	private void setState(BoardState state, Position[] capturedPosArr, Piece capturingPiece) {
 		if (state == null) return;
 		
 		curPlayer = player(state.playerType());
 		board = new Board(state, variant.getBoardPattern());
 		capturedPosList.clear();
 		capturedPosList.addAll(Arrays.asList(capturedPosArr));
+		this.capturingPiece = capturingPiece;
 	}
 	
 	
@@ -690,7 +691,7 @@ public class Checkers implements Serializable {
 	 * last move
 	 */
 	public void undoMove() {
-		setState(history.previous(), history.getCurrentCapturedPosArr());
+		setState(history.previous(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiece());
 	}
 	
 	
@@ -701,7 +702,7 @@ public class Checkers implements Serializable {
 	public void undoTurn() {
 		Player lastMovedPlayer = getCurPlayer();
 		while (getCurPlayer() == lastMovedPlayer) {
-			setState(history.previous(), history.getCurrentCapturedPosArr());
+			setState(history.previous(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiece());
 		}
 	}
 	
@@ -711,7 +712,7 @@ public class Checkers implements Serializable {
 	 * beginning of the game
 	 */
 	public void undoAllTurns() {
-		setState(history.first(), history.getCurrentCapturedPosArr());
+		setState(history.first(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiece());
 	}
 	
 	
@@ -722,7 +723,7 @@ public class Checkers implements Serializable {
 	public void redoTurn() {
 		Player lastMovedPlayer = getCurPlayer();
 		while (getCurPlayer() == lastMovedPlayer) {
-			setState(history.next(), history.getCurrentCapturedPosArr());
+			setState(history.next(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiece());
 		}
 	}
 	
@@ -732,7 +733,7 @@ public class Checkers implements Serializable {
 	 * recently in
 	 */
 	public void redoAllTurns() {
-		setState(history.last(), history.getCurrentCapturedPosArr());
+		setState(history.last(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiece());
 	}
 	
 
@@ -1886,7 +1887,7 @@ public class Checkers implements Serializable {
 				Piece curPiece = this.board.getPiece(i, j);
 				Piece copyPiece = copy.board.getPiece(i, j);
 				if (this.capturedPosList.contains(board.getPosition(curPiece))) {
-					copy.capturedPosList.add(board.getPosition(copyPiece));
+					copy.capturedPosList.add(copy.board.getPosition(copyPiece));
 				}
 				if (curPiece == capturingPiece) {
 					copy.capturingPiece = copyPiece;

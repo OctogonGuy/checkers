@@ -80,13 +80,15 @@ public enum Variant {
 	DAMA_TRIESTINA,
 	// TODO - Hawaiian Konane
 	// --- Invented family ---
-	DAMEO;
+	DAMEO,
 	// TODO - Vigman's Draughts
 	// TODO - Philosophy Shogi Checkers
 	// TODO - Poddavki (Suicide Checkers)
 	// TODO - Parachute Checkers
 	// TODO - One way Checker
 	// TODO - Corner Checkers
+	// --- Custom variant
+	CUSTOM;
 	
 	
 	
@@ -693,6 +695,11 @@ public enum Variant {
 		DAMEO.setQualityRule(false);
 		DAMEO.setPriorityRule(false);
 		DAMEO.setLinearMovement(true);
+		
+		
+		
+		// --- Custom variant ---
+		CUSTOM.setName("Custom");
 		
 	}
 	
@@ -1339,6 +1346,135 @@ public enum Variant {
 	 */
 	private void setLinearMovement(boolean linearMovement) {
 		this.linearMovement = linearMovement;
+	}
+	
+	// --- Custom setters ---
+
+	/**
+	 * @param rows the rows to set
+	 */
+	public static void setCustomRows(int rows) {
+		CUSTOM.rows = rows;
+	}
+
+	/**
+	 * @param cols the cols to set
+	 */
+	public static void setCustomCols(int cols) {
+		CUSTOM.cols = cols;
+	}
+
+	/**
+	 * @param numPieces the numPieces to set
+	 */
+	public static void setCustomNumPieces(int numPieces) {
+		CUSTOM.numPieces = numPieces;
+	}
+
+	/**
+	 * @param boardPattern the boardPattern to set
+	 */
+	public static void setCustomBoardPattern(BoardPattern boardPattern) {
+		CUSTOM.boardPattern = boardPattern;
+	}
+
+	/**
+	 * @param startingPositions the startingPositions to set
+	 */
+	public static void setCustomStartingPositions(StartingPositions startingPositions) {
+		CUSTOM.startingPositions = startingPositions;
+	}
+
+	/**
+	 * @param startingPlayer the startingPlayer to set
+	 */
+	public static void setCustomStartingPlayer(StartingPlayer startingPlayer) {
+		CUSTOM.startingPlayer = startingPlayer;
+	}
+
+	/**
+	 * @param manMovementDirections the manMovementDirections to set
+	 */
+	public static void setCustomManMovementDirections(RelativeDirection[] manMovementDirections) {
+		CUSTOM.manMovementDirections = manMovementDirections;
+	}
+
+	/**
+	 * @param manCaptureDirections the manCaptureDirections to set
+	 */
+	public static void setCustomManCaptureDirections(RelativeDirection[] manCaptureDirections) {
+		CUSTOM.manCaptureDirections = manCaptureDirections;
+	}
+
+	/**
+	 * @param kingMovementDirections the kingMovementDirections to set
+	 */
+	public static void setCustomKingMovementDirections(RelativeDirection[] kingMovementDirections) {
+		CUSTOM.kingMovementDirections = kingMovementDirections;
+	}
+
+	/**
+	 * @param kingCaptureDirections the kingCaptureDirections to set
+	 */
+	public static void setCustomKingCaptureDirections(RelativeDirection[] kingCaptureDirections) {
+		CUSTOM.kingCaptureDirections = kingCaptureDirections;
+	}
+
+	/**
+	 * @param kingType the kingType to set
+	 */
+	public static void setCustomKingType(KingType kingType) {
+		CUSTOM.kingType = kingType;
+	}
+
+	/**
+	 * @param kingsRowCapture the kingsRowCapture to set
+	 */
+	public static void setCustomKingsRowCapture(KingsRowCapture kingsRowCapture) {
+		CUSTOM.kingsRowCapture = kingsRowCapture;
+	}
+
+	/**
+	 * @param removePiecesImmediately the removePiecesImmediately to set
+	 */
+	public static void setCustomRemovePiecesImmediately(boolean removePiecesImmediately) {
+		CUSTOM.removePiecesImmediately = removePiecesImmediately;
+	}
+
+	/**
+	 * @param manCanCaptureKing the manCanCaptureKing to set
+	 */
+	public static void setCustomManCanCaptureKing(boolean manCanCaptureKing) {
+		CUSTOM.manCanCaptureKing = manCanCaptureKing;
+	}
+
+	/**
+	 * @param kingCanReverseDirection the kingCanReverseDirection to set
+	 */
+	public static void setCustomKingCanReverseDirection(boolean kingCanReverseDirection) {
+		CUSTOM.kingCanReverseDirection = kingCanReverseDirection;
+	}
+
+	/**
+	 * @param quantityRule Whether maximum capture sequence is required
+	 */
+	public static void setCustomQuantityRule(boolean quantityRule) {
+		CUSTOM.quantityRule = quantityRule;
+	}
+
+	/**
+	 * @param qualityRule Whether a sequence with max kings is required
+	 */
+	public static void setCustomQualityRule(boolean qualityRule) {
+		CUSTOM.qualityRule = qualityRule;
+	}
+
+	/**
+	 * @param priorityRule Whether a king is preferred over a man for a maximum
+	 * capture sequence
+	 */
+	public static void setCustomPriorityRule(boolean priorityRule) {
+		CUSTOM.priorityRule = priorityRule;
 	}
 
 	/**

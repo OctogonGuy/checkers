@@ -1,11 +1,14 @@
 package tech.octopusdragon.checkers.model;
 
+import java.io.Serializable;
+
 /**
  * A position on the board
  * @author Alex Gill
  *
  */
-public class Position {
+public class Position implements Serializable {
+	private static final long serialVersionUID = -7948755035877075668L;
 	
 	private int row;	// The row
 	private int col;	// The column

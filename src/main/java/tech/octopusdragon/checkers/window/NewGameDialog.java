@@ -50,6 +50,7 @@ public class NewGameDialog extends Dialog<Checkers> {
 	@FXML private ButtonType closeButtonType;
 	@FXML private ButtonType playButtonType;
 	@FXML private ButtonType infoButtonType;
+	@FXML private ButtonType customGameButtonType;
     @FXML private TreeView<Object> variantList;
     @FXML private CheckBox highlightMovesCheckBox;
     @FXML private RadioButton topPlayerBlackRadioButton;
@@ -78,7 +79,7 @@ public class NewGameDialog extends Dialog<Checkers> {
 		// Set result converter
 		setResultConverter((dialogButton) -> {
 			ButtonData data = dialogButton == null ? null : dialogButton.getButtonData();
-			return data == ButtonData.OK_DONE ? game : null;
+			return data == ButtonData.OK_DONE || data == ButtonData.OTHER ? game : null;
 		});
 	}
 	
@@ -104,9 +105,10 @@ public class NewGameDialog extends Dialog<Checkers> {
 				new Image(getClass().getClassLoader().getResourceAsStream(
 				CheckersApplication.CHECK_IMAGE_PATH)));
 		
-		// Populate tree view with variants
+		// Populate tree view with variants (except custom)
 		Map<Family, List<Variant>> families = new LinkedHashMap<>();
 		for (Variant variant : Variant.values()) {
+			if (variant == Variant.CUSTOM) continue;
 			if (!families.containsKey(variant.getFamily())) {
 				families.put(variant.getFamily(), new ArrayList<>());
 			}
@@ -203,6 +205,33 @@ public class NewGameDialog extends Dialog<Checkers> {
 		dialogPane.lookupButton(infoButtonType).addEventFilter(ActionEvent.ACTION, event -> {
 			new VariantInfoWindow((Variant)variantList.getSelectionModel().getSelectedItem().getValue()).show();
 			event.consume();
+		});
+		
+		// Show custom game dialog if custom button is clicked
+		dialogPane.lookupButton(customGameButtonType).addEventFilter(ActionEvent.ACTION, event -> {
+			Optional<Variant> result = new CustomGameDialog().showAndWait();
+			if (result.isPresent()) {
+				game = new Checkers(result.get());
+			}
+			else {
+				event.consume();
+				return;
+			}
+			
+			// Show dialog to choose first player if starting player is either
+			if (result.get().getStartingPlayer() == StartingPlayer.EITHER) {
+				PlayerType startingPlayer;
+				Optional<PlayerType> startingPlayerResult = new StartingPlayerDialog().showAndWait();
+				if (startingPlayerResult.isPresent()) {
+					startingPlayer = startingPlayerResult.get();
+					game.setStartingPlayer(startingPlayer);
+				}
+				else {
+					
+					// Do nothing if a player was not chosen
+					event.consume();
+				}
+			}
 		});
 		
 		// Set title

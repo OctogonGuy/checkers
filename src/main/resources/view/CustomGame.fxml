@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane id="custom-game-dialog" prefHeight="350.0" prefWidth="450.0" stylesheets="styles/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <BorderPane styleClass="borderless">
+         <top>
+            <StackPane styleClass="header" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="nameLabel" styleClass="title" text="Custom Variant" />
+               </children>
+            </StackPane>
+         </top>
+         <center>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox id="info">
+                     <children>
+                        <GridPane id="details-table">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="0.0" percentWidth="40.0" />
+                            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="60.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Rows" />
+                              <Label text="Columns" GridPane.rowIndex="1" />
+                              <Label text="Pieces per side" GridPane.rowIndex="2" />
+                              <Label text="Board pattern" GridPane.rowIndex="3" />
+                              <Label text="Piece starting positions" GridPane.rowIndex="4" />
+                              <Label text="Starting player" GridPane.rowIndex="5" />
+                              <GridPane alignment="CENTER" HBox.hgrow="ALWAYS" GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                                  <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints vgrow="NEVER" />
+                                  <RowConstraints vgrow="NEVER" />
+                                  <RowConstraints vgrow="NEVER" />
+                                </rowConstraints>
+                                 <children>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <CheckBox fx:id="manMoveDiagonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal forward" />
+                                          <CheckBox fx:id="manMoveDiagonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal backward" />
+                                          <CheckBox fx:id="manMoveOrthogonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal forward" />
+                                          <CheckBox fx:id="manMoveOrthogonalSidewaysCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal sideways" />
+                                          <CheckBox fx:id="manMoveOrthogonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal backward" />
+                                       </children>
+                                    </VBox>
+                                    <Label text="Man" GridPane.columnIndex="1" />
+                                    <Label text="King" GridPane.columnIndex="2" />
+                                    <Label text="Move" GridPane.rowIndex="1" />
+                                    <Label text="Capture" GridPane.rowIndex="2" />
+                                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <children>
+                                          <CheckBox fx:id="kingMoveDiagonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal forward" />
+                                          <CheckBox fx:id="kingMoveDiagonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal backward" />
+                                          <CheckBox fx:id="kingMoveOrthogonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal forward" />
+                                          <CheckBox fx:id="kingMoveOrthogonalSidewaysCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal sideways" />
+                                          <CheckBox fx:id="kingMoveOrthogonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal backward" />
+                                       </children>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <CheckBox fx:id="manCaptureDiagonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal forward" />
+                                          <CheckBox fx:id="manCaptureDiagonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal backward" />
+                                          <CheckBox fx:id="manCaptureOrthogonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal forward" />
+                                          <CheckBox fx:id="manCaptureOrthogonalSidewaysCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal sideways" />
+                                          <CheckBox fx:id="manCaptureOrthogonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal backward" />
+                                       </children>
+                                    </VBox>
+                                    <VBox GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <children>
+                                          <CheckBox fx:id="kingCaptureDiagonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal forward" />
+                                          <CheckBox fx:id="kingCaptureDiagonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Diagonal backward" />
+                                          <CheckBox fx:id="kingCaptureOrthogonalForwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal forward" />
+                                          <CheckBox fx:id="kingCaptureOrthogonalSidewaysCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal sideways" />
+                                          <CheckBox fx:id="kingCaptureOrthogonalBackwardCheckBox" contentDisplay="RIGHT" mnemonicParsing="false" text="Orthogonal backward" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </GridPane>
+                              <Label text="King type" GridPane.rowIndex="7" />
+                              <Label text="Kings row capture promotion" GridPane.rowIndex="8" />
+                              <Label text="Remove pieces immediately" GridPane.rowIndex="9" />
+                              <Label text="Man can capture king" GridPane.rowIndex="10" />
+                              <Label text="Quantity rule" GridPane.rowIndex="11" />
+                              <Label text="Quality rule" GridPane.rowIndex="12" />
+                              <Label text="Priority rule" GridPane.rowIndex="13" />
+                              <Spinner fx:id="columnsSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+	                              <valueFactory>
+							        <SpinnerValueFactory.IntegerSpinnerValueFactory max="16" min="2" />
+							      </valueFactory>
+						      </Spinner>
+                              <Spinner fx:id="rowsSpinner" editable="true" GridPane.columnIndex="1">
+	                              <valueFactory>
+							        <SpinnerValueFactory.IntegerSpinnerValueFactory max="16" min="2" />
+							      </valueFactory>
+						      </Spinner>
+                              <Spinner fx:id="piecesSpinner" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+	                              <valueFactory>
+							        <SpinnerValueFactory.IntegerSpinnerValueFactory max="128" min="1" />
+							      </valueFactory>
+						      </Spinner>
+                              <ChoiceBox fx:id="startingPositionsChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <ChoiceBox fx:id="boardPatternChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ChoiceBox fx:id="startingPlayerChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <ChoiceBox fx:id="kingTypeChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <ChoiceBox fx:id="kingsRowCapturePromotionChoiceBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <CheckBox fx:id="removePiecesImmediatelyCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <CheckBox fx:id="manCanCaptureKingCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                              <CheckBox fx:id="quantityRuleCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                              <CheckBox fx:id="qualityRuleCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                              <CheckBox fx:id="priorityRuleCheckBox" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </center>
+      </BorderPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="CLOSE" />
+      <ButtonType fx:id="playButtonType" buttonData="OK_DONE" text="Play" />
+   </buttonTypes>
+</DialogPane>

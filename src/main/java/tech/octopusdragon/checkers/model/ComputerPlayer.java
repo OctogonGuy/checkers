@@ -68,7 +68,7 @@ public class ComputerPlayer {
 		
 		Checkers gameCopy = game.clone();
 		Player movedPlayer = gameCopy.getCurPlayer();
-		for (Move move : game.validMoves(movedPlayer)) {
+		for (Move move : gameCopy.validMoves(movedPlayer)) {
 			gameCopy.move(move);
 			value = minimax(gameCopy, startingDepth - 1, alpha, beta, gameCopy.getCurPlayer() == movedPlayer ? maximizingPlayer : !maximizingPlayer);
 			gameCopy.undoMove();
