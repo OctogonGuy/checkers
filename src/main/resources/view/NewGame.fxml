@@ -26,8 +26,8 @@
          <children>
             <GridPane id="options-box" VBox.vgrow="NEVER">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
                 <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
+                <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
               </columnConstraints>
               <rowConstraints>
@@ -47,8 +47,8 @@
                      </toggleGroup></RadioButton>
                   <RadioButton fx:id="bottomPlayerBlackRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Bottom" toggleGroup="$blackTopOrBottom" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="White" GridPane.rowIndex="3" />
-                  <CheckBox fx:id="blackComputerPlayerCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#toggleBlackPlayerComputer" text="Computer" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <CheckBox fx:id="whiteComputerPlayerCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#toggleWhitePlayerComputer" text="Computer" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <CheckBox fx:id="blackComputerPlayerCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#toggleBlackPlayerComputer" text="Computer (Beta)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="whiteComputerPlayerCheckBox" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#toggleWhitePlayerComputer" text="Computer (Beta)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <RadioButton fx:id="topPlayerWhiteRadioButton" mnemonicParsing="false" onAction="#setTopPlayerTypeToWhite" text="Top" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <toggleGroup>
                         <ToggleGroup fx:id="whiteTopOrBottom" />

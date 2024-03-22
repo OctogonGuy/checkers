@@ -1,5 +1,7 @@
 package tech.octopusdragon.checkers.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import tech.octopusdragon.checkers.model.rules.KingType;
@@ -21,8 +23,9 @@ public class ComputerPlayer {
 	 * @param game The checkers game to reference
 	 * @param difficulty The difficulty from 0.0 (easiest) to 1.0 (hardest)
 	 * @return The computer player's chosen move
+	 * @throws InterruptedException if the thread this is on is interrupted
 	 */
-	public static Move getMove(Checkers game, double difficulty) {
+	public static Move getMove(Checkers game, double difficulty) throws InterruptedException {
 		Random rand = new Random();
 		
 		if (rand.nextDouble() < -Math.log10(0.9*difficulty + 0.1)) {
@@ -51,10 +54,10 @@ public class ComputerPlayer {
 	 * @param game The game
 	 * @param startingDepth The depth to start at
 	 * @return The best move the player can make
+	 * @throws InterruptedException if the thread this is on is interrupted
 	 */
-	private static Move minimaxMove(Checkers game, int startingDepth) {
+	private static Move minimaxMove(Checkers game, int startingDepth) throws InterruptedException {
 		int bestValue = Integer.MIN_VALUE;
-		Move bestMove = null;
 		int value = Integer.MIN_VALUE;
 		boolean maximizingPlayer = true;
 		int alpha = Integer.MIN_VALUE;
@@ -76,20 +79,31 @@ public class ComputerPlayer {
 		
 		Checkers gameCopy = game.clone();
 		Player movedPlayer = gameCopy.getCurPlayer();
+		List<Move> bestMoves = new ArrayList<Move>();
 		for (Move move : gameCopy.validMoves(movedPlayer)) {
 			gameCopy.move(move);
 			value = minimax(gameCopy, startingDepth - 1, alpha, beta, gameCopy.getCurPlayer() == movedPlayer ? maximizingPlayer : !maximizingPlayer);
 			gameCopy.undoMove();
-			if (value > bestValue || bestMove == null) {
+			if (bestMoves.isEmpty()) {
 				bestValue = value;
-				bestMove = move;
+				bestMoves.add(move);
+			}
+			else if (value > bestValue) {
+				bestValue = value;
+				bestMoves.clear();
+				bestMoves.add(move);
+			}
+			else if (value == bestValue) {
+				bestMoves.add(move);
 			}
 			alpha = Math.max(alpha, value);
+			// TODO - Alpha-beta pruning method may be faulty
 			if (value >= beta)
 				break;
 		}
 		
-		return bestMove;
+		// Return a random choice from the list of best moves
+		return bestMoves.get(new Random().nextInt(bestMoves.size()));
 	}
 	
 	
@@ -103,8 +117,13 @@ public class ComputerPlayer {
 	 * @param depth The current depth
 	 * @param maximizingPlayer Whether it is the maximizing player's turn
 	 * @return The value
+	 * @throws InterruptedException if the thread this is on is interrupted
 	 */
-	private static int minimax(Checkers game, int depth, int alpha, int beta, boolean maximizingPlayer) {
+	private static int minimax(Checkers game, int depth, int alpha, int beta, boolean maximizingPlayer) throws InterruptedException {
+		
+		// If the thread this is on is interrupted, throw an InterruptedException
+		if (Thread.currentThread().isInterrupted())
+			throw new InterruptedException();
 		
 		// Base case
 		if (game.isOver()) { 			// Reached leaf node

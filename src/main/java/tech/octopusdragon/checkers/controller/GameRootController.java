@@ -77,6 +77,7 @@ public class GameRootController {
 	private PieceGraphic draggedPiece;	// The piece on the board before drag
 	private PieceGraphic dragPiece;	// The graphic of a piece being dragged
 	private List<Animation> runningAnimations;	// Animations that are running
+	private List<Thread> runningThreads;		// Threads that are running
 	
 	
 	// --- GUI Components ---
@@ -110,6 +111,10 @@ public class GameRootController {
 	
 	@FXML
 	private void initialize() {
+		
+		// Initialize certain variables
+		runningAnimations = new ArrayList<>();
+		runningThreads = new ArrayList<>();
 		
 		// Initialize GUI components
 		messageLabels = new HashMap<>();
@@ -203,7 +208,6 @@ public class GameRootController {
 		// Assign values to variables
 		selected = false;
 		selectedPos = new Position();
-		runningAnimations = new ArrayList<>();
 		
 		// Create a new board
 		boardContainer.getChildren().clear();
@@ -512,24 +516,12 @@ public class GameRootController {
 	 * Makes computer player play move
 	 */
 	private void computerMove() {
-		Thread thread = new Thread(() -> {
-			Move computerMove = ComputerPlayer.getMove(game, computerDifficulty());
-			Platform.runLater(() -> {
-				Animation moveAnimation = moveAnimation(computerMove);
-				moveAnimation.setOnFinished(e -> {
-					move(computerMove);
-				});
-				displayMessage();
-				play(moveAnimation);
-			});
-		});
-		thread.setDaemon(true);
-		thread.start();
-
 		Thread messageThread = new Thread() {
+			@Override
 			public void run() {
 				int periods = 0;
-				while (thread.isAlive()) {
+				boolean running = true;
+				while (running) {
 					String suffix = "";
 					for (int i = 0; i < periods; i++) suffix += ".";
 					periods++;
@@ -541,13 +533,41 @@ public class GameRootController {
 					try {
 						Thread.sleep(CHANGING_MESSAGE_TIMEOUT);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						running = false;
 					}
 				}
+				runningThreads.remove(this);
 			}
 		};
 		messageThread.setDaemon(true);
+		runningThreads.add(messageThread);
 		messageThread.start();
+		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				Move computerMove;
+				try {
+					computerMove = ComputerPlayer.getMove(game, computerDifficulty());
+				} catch (InterruptedException e) {
+					runningThreads.remove(this);
+					return;
+				}
+				messageThread.interrupt();
+				Platform.runLater(() -> {
+					Animation moveAnimation = moveAnimation(computerMove);
+					moveAnimation.setOnFinished(e -> {
+						move(computerMove);
+					});
+					displayMessage();
+					play(moveAnimation);
+				});
+				runningThreads.remove(this);
+			}
+		};
+		thread.setDaemon(true);
+		runningThreads.add(thread);
+		thread.start();
 	}
 	
 	
@@ -1255,7 +1275,8 @@ public class GameRootController {
 			
 			// Show moves
 			deselect();
-			highlightMovablePieces();
+			if (!game.isOver())
+				highlightMovablePieces();
 		}
 	}
 	
@@ -1370,6 +1391,11 @@ public class GameRootController {
 	private void newGame() {
 		Optional<Checkers> result = new NewGameDialog().showAndWait();
 		if (result.isPresent()) {
+			// Stop running threads
+			for (Thread thread : runningThreads) {
+				thread.interrupt();
+			}
+			
 			newGame(result.get());
 		}
 	}

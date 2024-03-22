@@ -334,6 +334,7 @@ public class Checkers implements Serializable {
 	 * @return Whether the game is over
 	 */
 	public boolean isOver() {
+		// TODO - incorrectly determines player can't move if it is simply not their turn
 		return piecesOf(topPlayer()).isEmpty() || piecesOf(bottomPlayer()).isEmpty() ||
 				numPieces(topPlayer()) <= variant.getMinPieces() || numPieces(bottomPlayer()) <= variant.getMinPieces() ||
 				(!canMove(curPlayer) && !moved) || drawFromBoardRepeats() ||
@@ -345,6 +346,7 @@ public class Checkers implements Serializable {
 	 * @return The winner of the game if the game is over or null if a draw
 	 */
 	public Player winner() {
+		// TODO - incorrectly determines player can't move if it is simply not their turn
 		Player winner = null;
 		if (piecesOf(bottomPlayer()).isEmpty() ||
 				!canMove(bottomPlayer()) ||
