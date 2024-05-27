@@ -143,7 +143,8 @@ public class GameScreen implements Screen {
         filipinoOddCenterSpace.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         background = new Texture(Gdx.files.internal("images/table.jpg"));
         background.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        font = new BitmapFont(Gdx.files.internal("fonts/Lora.fnt"));
+        font = new BitmapFont(Gdx.files.internal("fonts/Lora_game.fnt"));
+        font.setColor(Color.BLACK);
         topGlyphLayout = new GlyphLayout(font, "");
         bottomGlyphLayout = new GlyphLayout(font, "");
         boardBorder = new ShapeRenderer();
@@ -201,7 +202,7 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         // Font size
         try {
-            font.getData().setScale(Math.min(height, width) / FONT_LINE_HEIGHT / FONT_HEIGHT);
+            font.getData().setScale(Math.min(height, width) / FONT_LINE_HEIGHT / FONT_HEIGHT * 3);
         } catch (IllegalArgumentException ignored) { }
         // Menu button size
         menuButton.setScale(font.getScaleX());

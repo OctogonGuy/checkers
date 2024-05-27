@@ -2,6 +2,7 @@ package tech.octopusdragon.checkers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -35,9 +36,20 @@ public class SettingsScreen implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
+        table.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
+        table.defaults().padTop(UIStyle.V_SPACING);
         stage.addActor(table);
+        Table settingsTable = new Table();
+        settingsTable.setFillParent(true);
+        settingsTable.defaults().padTop(UIStyle.V_SPACING);
+        settingsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
+        settingsTable.setBackground(skin.getDrawable("innerColor"));
+        ScrollPane scrollPane = new ScrollPane(settingsTable);
+        table.add(scrollPane).padTop(0).expand().fill();
+        table.row();
 
         // New game
+        HorizontalGroup startButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
         TextButton newGameButton = new TextButton("New game", skin);
         newGameButton.addListener(new ClickListener() {
             @Override
@@ -45,8 +57,7 @@ public class SettingsScreen implements Screen {
                 SessionData.application.setScreen(new NewGameScreen());
             }
         });
-        table.add(newGameButton);
-        table.row();
+        startButtons.addActor(newGameButton);
 
         // Restart game
         TextButton restartButton = new TextButton("Restart", skin);
@@ -56,10 +67,12 @@ public class SettingsScreen implements Screen {
                 UserData.game = new Checkers(UserData.game.getVariant());
             }
         });
-        table.add(restartButton);
-        table.row();
+        startButtons.addActor(restartButton);
+        settingsTable.add(startButtons).space(0);
+        settingsTable.row();
 
         // Variant info
+        HorizontalGroup infoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
         TextButton infoButton = new TextButton("Info", skin);
         infoButton.addListener(new ClickListener() {
             @Override
@@ -67,10 +80,12 @@ public class SettingsScreen implements Screen {
                 SessionData.application.setScreen(new VariantInfoScreen(UserData.game.getVariant()));
             }
         });
-        table.add(infoButton);
-        table.row();
+        infoButtons.addActor(infoButton);
+        settingsTable.add(infoButtons);
+        settingsTable.row();
 
         // Undo
+        HorizontalGroup undoRedoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
         TextButton undoButton = new TextButton("Undo", skin);
         undoButton.addListener(new ClickListener() {
             @Override
@@ -78,8 +93,7 @@ public class SettingsScreen implements Screen {
                 UserData.game.undoTurn();
             }
         });
-        table.add(undoButton);
-        table.row();
+        undoRedoButtons.addActor(undoButton);
 
         // Undo all
         TextButton undoAllButton = new TextButton("Undo all", skin);
@@ -89,8 +103,7 @@ public class SettingsScreen implements Screen {
                 UserData.game.undoAllTurns();
             }
         });
-        table.add(undoAllButton);
-        table.row();
+        undoRedoButtons.addActor(undoAllButton);
 
         // Redo
         TextButton redoButton = new TextButton("Redo", skin);
@@ -100,8 +113,7 @@ public class SettingsScreen implements Screen {
                 UserData.game.redoTurn();
             }
         });
-        table.add(redoButton);
-        table.row();
+        undoRedoButtons.addActor(redoButton);
 
         // Redo all
         TextButton redoAllButton = new TextButton("Redo all", skin);
@@ -111,8 +123,9 @@ public class SettingsScreen implements Screen {
                 UserData.game.redoAllTurns();
             }
         });
-        table.add(redoAllButton);
-        table.row();
+        undoRedoButtons.addActor(redoAllButton);
+        settingsTable.add(undoRedoButtons);
+        settingsTable.row();
 
         // Highlight moves check box
         CheckBox highlightMovesCheckBox = new CheckBox("Highlight moves", skin);
@@ -123,14 +136,15 @@ public class SettingsScreen implements Screen {
                 UserData.highlightMoves = highlightMovesCheckBox.isChecked();
             }
         });
-        table.add(highlightMovesCheckBox).colspan(3);
-        table.row();
+        settingsTable.add(highlightMovesCheckBox).colspan(3);
+        settingsTable.row();
 
         // Players
         Table playerSettingsTable = new Table();
-        playerSettingsTable.defaults().expand();
+        playerSettingsTable.defaults().expandX().spaceTop(UIStyle.TABLE_V_SPACING).spaceLeft(UIStyle.TABLE_H_SPACING);
+        playerSettingsTable.columnDefaults(0).spaceLeft(0);
         Label topPlayerLabel = new Label("Top player", skin);
-        playerSettingsTable.add(topPlayerLabel);
+        playerSettingsTable.add(topPlayerLabel).spaceTop(0);
         topPlayerImage = new Image();
         topPlayerImage.setSize(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE);
         topPlayerImage.addListener(new ClickListener() {
@@ -139,7 +153,7 @@ public class SettingsScreen implements Screen {
                 switchPlayerColors();
             }
         });
-        playerSettingsTable.add(topPlayerImage).size(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE);
+        playerSettingsTable.add(topPlayerImage).size(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE).spaceTop(0);
         CheckBox topHumanCheckBox = new CheckBox("Human", skin);
         topHumanCheckBox.setChecked(!UserData.topPlayerComputer);
         topHumanCheckBox.addListener(new ClickListener() {
@@ -157,7 +171,7 @@ public class SettingsScreen implements Screen {
                 UserData.topPlayerComputer = topComputerCheckBox.isChecked();
             }
         });
-        playerSettingsTable.add(topComputerCheckBox);
+        playerSettingsTable.add(topComputerCheckBox).spaceTop(0);
         ButtonGroup<CheckBox> topPlayerGroup = new ButtonGroup<>(topHumanCheckBox, topComputerCheckBox);
         topPlayerGroup.setMaxCheckCount(1);
         playerSettingsTable.row();
@@ -192,11 +206,11 @@ public class SettingsScreen implements Screen {
         playerSettingsTable.add(bottomComputerCheckBox);
         ButtonGroup<CheckBox> bottomPlayerGroup = new ButtonGroup<>(bottomHumanCheckBox, bottomComputerCheckBox);
         bottomPlayerGroup.setMaxCheckCount(1);
-        table.add(playerSettingsTable);
-        table.row();
+        settingsTable.add(playerSettingsTable);
+        settingsTable.row();
 
         // Button bar
-        HorizontalGroup buttonBar = new HorizontalGroup();
+        HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
@@ -220,6 +234,8 @@ public class SettingsScreen implements Screen {
         bottomPlayerImage.setDrawable(new SpriteDrawable(new Sprite(
             UserData.topPlayer == PlayerType.BLACK ? whitePieceTexture : blackPieceTexture)));
 
+        Color color = skin.getColor("backgroundColor");
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

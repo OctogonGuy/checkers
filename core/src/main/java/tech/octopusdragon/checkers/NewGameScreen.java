@@ -2,6 +2,7 @@ package tech.octopusdragon.checkers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,6 +24,7 @@ public class NewGameScreen implements Screen {
     private final Texture blackPieceTexture;
     private final Image topPlayerImage;
     private final Image bottomPlayerImage;
+    private final Texture logoTexture;
     private static final float PLAYER_IMAGE_SIZE = 40f;
     private PlayerType topPlayer;
 
@@ -38,11 +40,21 @@ public class NewGameScreen implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
+        table.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
+        table.defaults().padTop(UIStyle.V_SPACING);
         stage.addActor(table);
 
-        // Title
-        Label titleLabel = new Label("Checkers", skin);
-        table.add(titleLabel);
+        // Logo
+        logoTexture = new Texture(Gdx.files.internal("images/logo.png"));
+        Image logo = new Image(logoTexture);
+        table.add(logo).size(
+            stage.getWidth() / 2,
+            logoTexture.getHeight() * (stage.getWidth() / logoTexture.getWidth()) / 2);
+        table.row().padTop(0);
+
+        // Subtitle
+        Label subtitleLabel = new Label("Select a variant to play.", skin);
+        table.add(subtitleLabel);
         table.row();
 
         // Highlight moves check box
@@ -60,9 +72,10 @@ public class NewGameScreen implements Screen {
         // Players
         topPlayer = UserData.topPlayer;
         Table playerSettingsTable = new Table();
-        playerSettingsTable.defaults().expand();
+        playerSettingsTable.defaults().expandX().spaceTop(UIStyle.TABLE_V_SPACING).spaceLeft(UIStyle.TABLE_H_SPACING);
+        playerSettingsTable.columnDefaults(0).spaceLeft(0);
         Label topPlayerLabel = new Label("Top player", skin);
-        playerSettingsTable.add(topPlayerLabel);
+        playerSettingsTable.add(topPlayerLabel).padTop(0);
         topPlayerImage = new Image();
         topPlayerImage.setSize(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE);
         topPlayerImage.addListener(new ClickListener() {
@@ -71,13 +84,13 @@ public class NewGameScreen implements Screen {
                 switchPlayerColors();
             }
         });
-        playerSettingsTable.add(topPlayerImage).size(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE);
+        playerSettingsTable.add(topPlayerImage).size(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE).spaceTop(0);
         CheckBox topHumanCheckBox = new CheckBox("Human", skin);
         topHumanCheckBox.setChecked(!UserData.topPlayerComputer);
-        playerSettingsTable.add(topHumanCheckBox);
+        playerSettingsTable.add(topHumanCheckBox).spaceTop(0);
         CheckBox topComputerCheckBox = new CheckBox("Computer", skin);
         topComputerCheckBox.setChecked(UserData.topPlayerComputer);
-        playerSettingsTable.add(topComputerCheckBox);
+        playerSettingsTable.add(topComputerCheckBox).spaceTop(0);
         ButtonGroup<CheckBox> topPlayerGroup = new ButtonGroup<>(topHumanCheckBox, topComputerCheckBox);
         topPlayerGroup.setMaxCheckCount(1);
         playerSettingsTable.row();
@@ -107,11 +120,11 @@ public class NewGameScreen implements Screen {
         List<Variant> list = new List<>(skin);
         list.setItems(Variant.values());
         ScrollPane listScrollPane = new ScrollPane(list);
-        table.add(listScrollPane);
+        table.add(listScrollPane).expand().fill().maxWidth(UIStyle.MAX_WIDTH);
         table.row();
 
         // Button bar
-        HorizontalGroup buttonBar = new HorizontalGroup();
+        HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
         TextButton playButton = new TextButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
@@ -165,6 +178,8 @@ public class NewGameScreen implements Screen {
         bottomPlayerImage.setDrawable(new SpriteDrawable(new Sprite(
             topPlayer == PlayerType.BLACK ? whitePieceTexture : blackPieceTexture)));
 
+        Color color = skin.getColor("backgroundColor");
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -194,6 +209,9 @@ public class NewGameScreen implements Screen {
     public void dispose() {
         stage.dispose();
         skin.dispose();
+        whitePieceTexture.dispose();
+        blackPieceTexture.dispose();
+        logoTexture.dispose();
     }
 
     /**

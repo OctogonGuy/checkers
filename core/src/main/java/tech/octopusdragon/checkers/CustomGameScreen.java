@@ -2,6 +2,7 @@ package tech.octopusdragon.checkers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -59,15 +60,21 @@ public class CustomGameScreen implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
+        table.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
+        table.defaults().padTop(UIStyle.V_SPACING);
         stage.addActor(table);
 
         Table optionsTable = new Table();
+        optionsTable.columnDefaults(0).left();
+        optionsTable.defaults().expandX().padTop(UIStyle.V_SPACING);;
+        optionsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
+        optionsTable.setBackground(skin.getDrawable("innerColor"));
         ScrollPane optionsTableScrollPane = new ScrollPane(optionsTable);
-        table.add(optionsTableScrollPane);
+        table.add(optionsTableScrollPane).expand().fill();
         table.row();
 
         // Button bar
-        HorizontalGroup buttonBar = new HorizontalGroup();
+        HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
         TextButton playButton = new TextButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
@@ -93,10 +100,10 @@ public class CustomGameScreen implements Screen {
 
         // Rows
         Label rowsLabel = new Label("Rows", skin);
-        optionsTable.add(rowsLabel);
+        optionsTable.add(rowsLabel).padTop(0);
         rowsSpinner = new SelectBox<>(skin);
         rowsSpinner.setItems(IntStream.range(2, 99).boxed().toArray(Integer[]::new));
-        optionsTable.add(rowsSpinner);
+        optionsTable.add(rowsSpinner).padTop(0);
         optionsTable.row();
 
         // Columns
@@ -124,7 +131,7 @@ public class CustomGameScreen implements Screen {
         optionsTable.row();
 
         // Piece starting positions
-        Label pieceStartingPositionsLabel = new Label("Piece starting positions", skin);
+        Label pieceStartingPositionsLabel = new Label("Starting positions", skin);
         optionsTable.add(pieceStartingPositionsLabel);
         pieceStartingPositionsSpinner = new SelectBox<>(skin);
         pieceStartingPositionsSpinner.setItems(StartingPositions.values());
@@ -143,9 +150,11 @@ public class CustomGameScreen implements Screen {
         Label movesLabel = new Label("Moves", skin);
         optionsTable.add(movesLabel);
         Table movesTable = new Table();
-        movesTable.add();
-        movesTable.add(new Label("Man", skin)).colspan(2);
-        movesTable.add(new Label("King", skin)).colspan(2);
+        movesTable.defaults().padTop(UIStyle.TABLE_V_SPACING).padLeft(UIStyle.H_SPACING);
+        movesTable.columnDefaults(0).padLeft(0);
+        movesTable.add().padTop(0);
+        movesTable.add(new Label("Man", skin)).colspan(2).padTop(0);
+        movesTable.add(new Label("King", skin)).colspan(2).padTop(0);
         movesTable.row();
         movesTable.add();
         movesTable.add(new Label("Move", skin));
@@ -153,7 +162,7 @@ public class CustomGameScreen implements Screen {
         movesTable.add(new Label("Move", skin));
         movesTable.add(new Label("Capture", skin));
         movesTable.row();
-        movesTable.add(new Label("Diagonal forward", skin));
+        movesTable.add(new Label("Diagonal\nforward", skin));
         manMoveDiagonalForwardCheckBox = new CheckBox(null, skin);
         movesTable.add(manMoveDiagonalForwardCheckBox);
         manCaptureDiagonalForwardCheckBox = new CheckBox(null, skin);
@@ -163,7 +172,7 @@ public class CustomGameScreen implements Screen {
         kingCaptureDiagonalForwardCheckBox = new CheckBox(null, skin);
         movesTable.add(kingCaptureDiagonalForwardCheckBox);
         movesTable.row();
-        movesTable.add(new Label("Diagonal backward", skin));
+        movesTable.add(new Label("Diagonal\nbackward", skin));
         manMoveDiagonalBackwardCheckBox = new CheckBox(null, skin);
         movesTable.add(manMoveDiagonalBackwardCheckBox);
         manCaptureDiagonalBackwardCheckBox = new CheckBox(null, skin);
@@ -173,7 +182,7 @@ public class CustomGameScreen implements Screen {
         kingCaptureDiagonalBackwardCheckBox = new CheckBox(null, skin);
         movesTable.add(kingCaptureDiagonalBackwardCheckBox);
         movesTable.row();
-        movesTable.add(new Label("Orthogonal forward", skin));
+        movesTable.add(new Label("Orthogonal\nforward", skin));
         manMoveOrthogonalForwardCheckBox = new CheckBox(null, skin);
         movesTable.add(manMoveOrthogonalForwardCheckBox);
         manCaptureOrthogonalForwardCheckBox = new CheckBox(null, skin);
@@ -183,7 +192,7 @@ public class CustomGameScreen implements Screen {
         kingCaptureOrthogonalForwardCheckBox = new CheckBox(null, skin);
         movesTable.add(kingCaptureOrthogonalForwardCheckBox);
         movesTable.row();
-        movesTable.add(new Label("Orthogonal sideways", skin));
+        movesTable.add(new Label("Orthogonal\nsideways", skin));
         manMoveOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
         movesTable.add(manMoveOrthogonalSidewaysCheckBox);
         manCaptureOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
@@ -193,7 +202,7 @@ public class CustomGameScreen implements Screen {
         kingCaptureOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
         movesTable.add(kingCaptureOrthogonalSidewaysCheckBox);
         movesTable.row();
-        movesTable.add(new Label("Orthogonal backward", skin));
+        movesTable.add(new Label("Orthogonal\nbackward", skin));
         manMoveOrthogonalBackwardCheckBox = new CheckBox(null, skin);
         movesTable.add(manMoveOrthogonalBackwardCheckBox);
         manCaptureOrthogonalBackwardCheckBox = new CheckBox(null, skin);
@@ -214,7 +223,7 @@ public class CustomGameScreen implements Screen {
         optionsTable.row();
 
         // Kings row capture promotion
-        Label kingsRowCapturePromotionLabel = new Label("Kings row capture promotion", skin);
+        Label kingsRowCapturePromotionLabel = new Label("Kings row capture", skin);
         optionsTable.add(kingsRowCapturePromotionLabel);
         kingsRowCapturePromotionSpinner = new SelectBox<>(skin);
         kingsRowCapturePromotionSpinner.setItems(KingsRowCapture.values());
@@ -222,14 +231,14 @@ public class CustomGameScreen implements Screen {
         optionsTable.row();
 
         // Remove pieces immediately
-        Label removePiecesImmediatelyLabel = new Label("Remove pieces immediately", skin);
+        Label removePiecesImmediatelyLabel = new Label("Remove immediately", skin);
         optionsTable.add(removePiecesImmediatelyLabel);
         removePiecesImmediatelyCheckBox = new CheckBox(null, skin);
         optionsTable.add(removePiecesImmediatelyCheckBox);
         optionsTable.row();
 
         // Man can capture king
-        Label manCanCaptureKingLabel = new Label("Man can capture king", skin);
+        Label manCanCaptureKingLabel = new Label("Men capture kings", skin);
         optionsTable.add(manCanCaptureKingLabel);
         manCanCaptureKingCheckBox = new CheckBox(null, skin);
         optionsTable.add(manCanCaptureKingCheckBox);
@@ -264,6 +273,8 @@ public class CustomGameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Color color = skin.getColor("backgroundColor");
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

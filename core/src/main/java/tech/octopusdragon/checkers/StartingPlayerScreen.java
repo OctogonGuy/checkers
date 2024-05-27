@@ -2,6 +2,7 @@ package tech.octopusdragon.checkers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,18 +21,23 @@ public class StartingPlayerScreen implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
+        table.defaults().center();
+        table.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
+        table.defaults().padTop(UIStyle.V_SPACING);
         stage.addActor(table);
 
         // Starting player select
+        HorizontalGroup startingPlayerSelect = new HorizontalGroup().space(UIStyle.H_SPACING);
         Label startingPlayerLabel = new Label("Starting player", skin);
-        table.add(startingPlayerLabel);
+        startingPlayerSelect.addActor(startingPlayerLabel);
         SelectBox<PlayerType> startingPlayerSelectBox = new SelectBox<>(skin);
         startingPlayerSelectBox.setItems(PlayerType.values());
-        table.add(startingPlayerSelectBox);
+        startingPlayerSelect.addActor(startingPlayerSelectBox);
+        table.add(startingPlayerSelect).space(0).expandY().fill();
         table.row();
 
         // Button bar
-        HorizontalGroup buttonBar = new HorizontalGroup();
+        HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
         TextButton playButton = new TextButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
@@ -59,6 +65,8 @@ public class StartingPlayerScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Color color = skin.getColor("backgroundColor");
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
