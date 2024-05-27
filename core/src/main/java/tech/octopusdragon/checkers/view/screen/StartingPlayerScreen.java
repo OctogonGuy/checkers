@@ -9,9 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.PlayerType;
+import tech.octopusdragon.checkers.view.widget.CustomButton;
 
 public class StartingPlayerScreen implements Screen {
     private final Stage stage;
@@ -41,7 +42,7 @@ public class StartingPlayerScreen implements Screen {
 
         // Button bar
         HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
-        TextButton playButton = new TextButton("Play", skin);
+        CustomButton playButton = new CustomButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -50,7 +51,7 @@ public class StartingPlayerScreen implements Screen {
             }
         });
         buttonBar.addActor(playButton);
-        TextButton backButton = new TextButton("Back", skin);
+        CustomButton backButton = new CustomButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

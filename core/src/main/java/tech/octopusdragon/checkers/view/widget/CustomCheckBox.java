@@ -3,7 +3,7 @@ package tech.octopusdragon.checkers.view.widget;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Scaling;
-import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 
 /**
  * Check box that is bigger than the default

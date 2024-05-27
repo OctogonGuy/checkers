@@ -9,12 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
 import tech.octopusdragon.checkers.model.rules.*;
+import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class CustomGameScreen implements Screen {
 
         Table optionsTable = new Table();
         optionsTable.columnDefaults(0).left();
-        optionsTable.defaults().expandX().padTop(UIStyle.V_SPACING);;
+        optionsTable.defaults().expandX().padTop(UIStyle.V_SPACING);
         optionsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         optionsTable.setBackground(skin.getDrawable("innerColor"));
         ScrollPane optionsTableScrollPane = new ScrollPane(optionsTable);
@@ -79,7 +80,7 @@ public class CustomGameScreen implements Screen {
 
         // Button bar
         HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
-        TextButton playButton = new TextButton("Play", skin);
+        CustomButton playButton = new CustomButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -92,7 +93,7 @@ public class CustomGameScreen implements Screen {
             }
         });
         buttonBar.addActor(playButton);
-        TextButton backButton = new TextButton("Back", skin);
+        CustomButton backButton = new CustomButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

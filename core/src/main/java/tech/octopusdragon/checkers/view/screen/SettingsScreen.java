@@ -12,11 +12,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.PlayerType;
+import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
 
 public class SettingsScreen implements Screen {
@@ -54,7 +55,7 @@ public class SettingsScreen implements Screen {
 
         // New game
         HorizontalGroup startButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
-        TextButton newGameButton = new TextButton("New game", skin);
+        CustomButton newGameButton = new CustomButton("New game", skin);
         newGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -64,7 +65,7 @@ public class SettingsScreen implements Screen {
         startButtons.addActor(newGameButton);
 
         // Restart game
-        TextButton restartButton = new TextButton("Restart", skin);
+        CustomButton restartButton = new CustomButton("Restart", skin);
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -77,7 +78,7 @@ public class SettingsScreen implements Screen {
 
         // Variant info
         HorizontalGroup infoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
-        TextButton infoButton = new TextButton("Info", skin);
+        CustomButton infoButton = new CustomButton("Info", skin);
         infoButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -90,7 +91,7 @@ public class SettingsScreen implements Screen {
 
         // Undo
         HorizontalGroup undoRedoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
-        TextButton undoButton = new TextButton("Undo", skin);
+        CustomButton undoButton = new CustomButton("Undo", skin);
         undoButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -100,7 +101,7 @@ public class SettingsScreen implements Screen {
         undoRedoButtons.addActor(undoButton);
 
         // Undo all
-        TextButton undoAllButton = new TextButton("Undo all", skin);
+        CustomButton undoAllButton = new CustomButton("Undo all", skin);
         undoAllButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -110,7 +111,7 @@ public class SettingsScreen implements Screen {
         undoRedoButtons.addActor(undoAllButton);
 
         // Redo
-        TextButton redoButton = new TextButton("Redo", skin);
+        CustomButton redoButton = new CustomButton("Redo", skin);
         redoButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -120,7 +121,7 @@ public class SettingsScreen implements Screen {
         undoRedoButtons.addActor(redoButton);
 
         // Redo all
-        TextButton redoAllButton = new TextButton("Redo all", skin);
+        CustomButton redoAllButton = new CustomButton("Redo all", skin);
         redoAllButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -215,7 +216,7 @@ public class SettingsScreen implements Screen {
 
         // Button bar
         HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
-        TextButton backButton = new TextButton("Back", skin);
+        CustomButton backButton = new CustomButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -1,4 +1,4 @@
-package tech.octopusdragon.checkers.data;
+package tech.octopusdragon.checkers.view.style;
 
 public class UIStyle {
     public static final float H_SPACING = 25;
@@ -11,4 +11,6 @@ public class UIStyle {
     public static final float MAX_WIDTH = 1000;
     public static final float CHECK_BOX_SIZE = 26;
     public static final float CHECK_BOX_SPACING = 8;
+    public static final float BUTTON_PADDING_V = 4;
+    public static final float BUTTON_PADDING_H = 36;
 }

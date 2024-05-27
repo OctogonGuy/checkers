@@ -10,9 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
+import tech.octopusdragon.checkers.view.widget.CustomButton;
 
 import java.util.Arrays;
 
@@ -49,7 +50,7 @@ public class VariantInfoScreen implements Screen {
 
         // Button bar
         HorizontalGroup buttonBar = new HorizontalGroup().space(UIStyle.BUTTON_BAR_SPACING);
-        TextButton backButton = new TextButton("Back", skin);
+        CustomButton backButton = new CustomButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
