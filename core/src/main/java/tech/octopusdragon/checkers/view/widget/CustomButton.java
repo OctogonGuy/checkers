@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import tech.octopusdragon.checkers.view.style.UIStyle;
 
+/**
+ * Button with padding
+ */
 public class CustomButton extends TextButton {
     public CustomButton(String text, Skin skin) {
         super(text, skin);

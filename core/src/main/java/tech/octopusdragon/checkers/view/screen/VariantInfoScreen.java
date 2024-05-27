@@ -14,6 +14,7 @@ import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
+import tech.octopusdragon.checkers.view.widget.HeaderLabel;
 
 import java.util.Arrays;
 
@@ -34,7 +35,7 @@ public class VariantInfoScreen implements Screen {
         stage.addActor(table);
 
         // Name
-        Label nameText = new Label(variant.getName(), skin);
+        HeaderLabel nameText = new HeaderLabel(variant.getName(), skin);
         table.add(nameText);
         table.row().space(0);
 
