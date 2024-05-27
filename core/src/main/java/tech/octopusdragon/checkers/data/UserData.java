@@ -1,4 +1,4 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.data;
 
 import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Checkers;

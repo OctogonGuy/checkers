@@ -1,4 +1,4 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import tech.octopusdragon.checkers.data.SessionData;
+import tech.octopusdragon.checkers.data.UIStyle;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
 

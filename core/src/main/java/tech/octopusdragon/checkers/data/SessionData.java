@@ -1,6 +1,7 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.data;
 
 import com.badlogic.gdx.Screen;
+import tech.octopusdragon.checkers.CheckersApplication;
 
 import java.util.Stack;
 

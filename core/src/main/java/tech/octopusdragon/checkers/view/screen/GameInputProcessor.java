@@ -1,9 +1,11 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.view.screen;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import tech.octopusdragon.checkers.CheckersApplication;
+import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Capture;
 import tech.octopusdragon.checkers.model.Move;
 import tech.octopusdragon.checkers.model.Piece;

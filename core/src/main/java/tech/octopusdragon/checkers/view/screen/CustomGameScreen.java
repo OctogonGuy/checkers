@@ -1,4 +1,4 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,10 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import tech.octopusdragon.checkers.data.SessionData;
+import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
 import tech.octopusdragon.checkers.model.rules.*;
+import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -25,33 +29,33 @@ public class CustomGameScreen implements Screen {
     private final SelectBox<BoardPattern> boardPatternSpinner;
     private final SelectBox<StartingPositions> pieceStartingPositionsSpinner;
     private final SelectBox<StartingPlayer> startingPlayerSpinner;
-    private final CheckBox manMoveDiagonalForwardCheckBox;
-    private final CheckBox manCaptureDiagonalForwardCheckBox;
-    private final CheckBox kingMoveDiagonalForwardCheckBox;
-    private final CheckBox kingCaptureDiagonalForwardCheckBox;
-    private final CheckBox manMoveDiagonalBackwardCheckBox;
-    private final CheckBox manCaptureDiagonalBackwardCheckBox;
-    private final CheckBox kingMoveDiagonalBackwardCheckBox;
-    private final CheckBox kingCaptureDiagonalBackwardCheckBox;
-    private final CheckBox manMoveOrthogonalForwardCheckBox;
-    private final CheckBox manCaptureOrthogonalForwardCheckBox;
-    private final CheckBox kingMoveOrthogonalForwardCheckBox;
-    private final CheckBox kingCaptureOrthogonalForwardCheckBox;
-    private final CheckBox manMoveOrthogonalSidewaysCheckBox;
-    private final CheckBox manCaptureOrthogonalSidewaysCheckBox;
-    private final CheckBox kingMoveOrthogonalSidewaysCheckBox;
-    private final CheckBox kingCaptureOrthogonalSidewaysCheckBox;
-    private final CheckBox manMoveOrthogonalBackwardCheckBox;
-    private final CheckBox manCaptureOrthogonalBackwardCheckBox;
-    private final CheckBox kingMoveOrthogonalBackwardCheckBox;
-    private final CheckBox kingCaptureOrthogonalBackwardCheckBox;
+    private final CustomCheckBox manMoveDiagonalForwardCustomCheckBox;
+    private final CustomCheckBox manCaptureDiagonalForwardCustomCheckBox;
+    private final CustomCheckBox kingMoveDiagonalForwardCustomCheckBox;
+    private final CustomCheckBox kingCaptureDiagonalForwardCustomCheckBox;
+    private final CustomCheckBox manMoveDiagonalBackwardCustomCheckBox;
+    private final CustomCheckBox manCaptureDiagonalBackwardCustomCheckBox;
+    private final CustomCheckBox kingMoveDiagonalBackwardCustomCheckBox;
+    private final CustomCheckBox kingCaptureDiagonalBackwardCustomCheckBox;
+    private final CustomCheckBox manMoveOrthogonalForwardCustomCheckBox;
+    private final CustomCheckBox manCaptureOrthogonalForwardCustomCheckBox;
+    private final CustomCheckBox kingMoveOrthogonalForwardCustomCheckBox;
+    private final CustomCheckBox kingCaptureOrthogonalForwardCustomCheckBox;
+    private final CustomCheckBox manMoveOrthogonalSidewaysCustomCheckBox;
+    private final CustomCheckBox manCaptureOrthogonalSidewaysCustomCheckBox;
+    private final CustomCheckBox kingMoveOrthogonalSidewaysCustomCheckBox;
+    private final CustomCheckBox kingCaptureOrthogonalSidewaysCustomCheckBox;
+    private final CustomCheckBox manMoveOrthogonalBackwardCustomCheckBox;
+    private final CustomCheckBox manCaptureOrthogonalBackwardCustomCheckBox;
+    private final CustomCheckBox kingMoveOrthogonalBackwardCustomCheckBox;
+    private final CustomCheckBox kingCaptureOrthogonalBackwardCustomCheckBox;
     private final SelectBox<KingType> kingTypeSpinner;
     private final SelectBox<KingsRowCapture> kingsRowCapturePromotionSpinner;
-    private final CheckBox removePiecesImmediatelyCheckBox;
-    private final CheckBox manCanCaptureKingCheckBox;
-    private final CheckBox quantityRuleCheckBox;
-    private final CheckBox qualityRuleCheckBox;
-    private final CheckBox priorityRuleCheckBox;
+    private final CustomCheckBox removePiecesImmediatelyCustomCheckBox;
+    private final CustomCheckBox manCanCaptureKingCustomCheckBox;
+    private final CustomCheckBox quantityRuleCustomCheckBox;
+    private final CustomCheckBox qualityRuleCustomCheckBox;
+    private final CustomCheckBox priorityRuleCustomCheckBox;
 
     public CustomGameScreen() {
         stage = new Stage();
@@ -163,54 +167,54 @@ public class CustomGameScreen implements Screen {
         movesTable.add(new Label("Capture", skin));
         movesTable.row();
         movesTable.add(new Label("Diagonal\nforward", skin));
-        manMoveDiagonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manMoveDiagonalForwardCheckBox);
-        manCaptureDiagonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manCaptureDiagonalForwardCheckBox);
-        kingMoveDiagonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingMoveDiagonalForwardCheckBox);
-        kingCaptureDiagonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingCaptureDiagonalForwardCheckBox);
+        manMoveDiagonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manMoveDiagonalForwardCustomCheckBox);
+        manCaptureDiagonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manCaptureDiagonalForwardCustomCheckBox);
+        kingMoveDiagonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingMoveDiagonalForwardCustomCheckBox);
+        kingCaptureDiagonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingCaptureDiagonalForwardCustomCheckBox);
         movesTable.row();
         movesTable.add(new Label("Diagonal\nbackward", skin));
-        manMoveDiagonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manMoveDiagonalBackwardCheckBox);
-        manCaptureDiagonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manCaptureDiagonalBackwardCheckBox);
-        kingMoveDiagonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingMoveDiagonalBackwardCheckBox);
-        kingCaptureDiagonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingCaptureDiagonalBackwardCheckBox);
+        manMoveDiagonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manMoveDiagonalBackwardCustomCheckBox);
+        manCaptureDiagonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manCaptureDiagonalBackwardCustomCheckBox);
+        kingMoveDiagonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingMoveDiagonalBackwardCustomCheckBox);
+        kingCaptureDiagonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingCaptureDiagonalBackwardCustomCheckBox);
         movesTable.row();
         movesTable.add(new Label("Orthogonal\nforward", skin));
-        manMoveOrthogonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manMoveOrthogonalForwardCheckBox);
-        manCaptureOrthogonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manCaptureOrthogonalForwardCheckBox);
-        kingMoveOrthogonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingMoveOrthogonalForwardCheckBox);
-        kingCaptureOrthogonalForwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingCaptureOrthogonalForwardCheckBox);
+        manMoveOrthogonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manMoveOrthogonalForwardCustomCheckBox);
+        manCaptureOrthogonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manCaptureOrthogonalForwardCustomCheckBox);
+        kingMoveOrthogonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingMoveOrthogonalForwardCustomCheckBox);
+        kingCaptureOrthogonalForwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingCaptureOrthogonalForwardCustomCheckBox);
         movesTable.row();
         movesTable.add(new Label("Orthogonal\nsideways", skin));
-        manMoveOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
-        movesTable.add(manMoveOrthogonalSidewaysCheckBox);
-        manCaptureOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
-        movesTable.add(manCaptureOrthogonalSidewaysCheckBox);
-        kingMoveOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingMoveOrthogonalSidewaysCheckBox);
-        kingCaptureOrthogonalSidewaysCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingCaptureOrthogonalSidewaysCheckBox);
+        manMoveOrthogonalSidewaysCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manMoveOrthogonalSidewaysCustomCheckBox);
+        manCaptureOrthogonalSidewaysCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manCaptureOrthogonalSidewaysCustomCheckBox);
+        kingMoveOrthogonalSidewaysCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingMoveOrthogonalSidewaysCustomCheckBox);
+        kingCaptureOrthogonalSidewaysCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingCaptureOrthogonalSidewaysCustomCheckBox);
         movesTable.row();
         movesTable.add(new Label("Orthogonal\nbackward", skin));
-        manMoveOrthogonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manMoveOrthogonalBackwardCheckBox);
-        manCaptureOrthogonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(manCaptureOrthogonalBackwardCheckBox);
-        kingMoveOrthogonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingMoveOrthogonalBackwardCheckBox);
-        kingCaptureOrthogonalBackwardCheckBox = new CheckBox(null, skin);
-        movesTable.add(kingCaptureOrthogonalBackwardCheckBox);
+        manMoveOrthogonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manMoveOrthogonalBackwardCustomCheckBox);
+        manCaptureOrthogonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(manCaptureOrthogonalBackwardCustomCheckBox);
+        kingMoveOrthogonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingMoveOrthogonalBackwardCustomCheckBox);
+        kingCaptureOrthogonalBackwardCustomCheckBox = new CustomCheckBox(null, skin);
+        movesTable.add(kingCaptureOrthogonalBackwardCustomCheckBox);
         optionsTable.add(movesTable);
         optionsTable.row();
 
@@ -233,36 +237,36 @@ public class CustomGameScreen implements Screen {
         // Remove pieces immediately
         Label removePiecesImmediatelyLabel = new Label("Remove immediately", skin);
         optionsTable.add(removePiecesImmediatelyLabel);
-        removePiecesImmediatelyCheckBox = new CheckBox(null, skin);
-        optionsTable.add(removePiecesImmediatelyCheckBox);
+        removePiecesImmediatelyCustomCheckBox = new CustomCheckBox(null, skin);
+        optionsTable.add(removePiecesImmediatelyCustomCheckBox);
         optionsTable.row();
 
         // Man can capture king
         Label manCanCaptureKingLabel = new Label("Men capture kings", skin);
         optionsTable.add(manCanCaptureKingLabel);
-        manCanCaptureKingCheckBox = new CheckBox(null, skin);
-        optionsTable.add(manCanCaptureKingCheckBox);
+        manCanCaptureKingCustomCheckBox = new CustomCheckBox(null, skin);
+        optionsTable.add(manCanCaptureKingCustomCheckBox);
         optionsTable.row();
 
         // Quantity rule
         Label quantityRuleLabel = new Label("Quantity rule", skin);
         optionsTable.add(quantityRuleLabel);
-        quantityRuleCheckBox = new CheckBox(null, skin);
-        optionsTable.add(quantityRuleCheckBox);
+        quantityRuleCustomCheckBox = new CustomCheckBox(null, skin);
+        optionsTable.add(quantityRuleCustomCheckBox);
         optionsTable.row();
 
         // Quality rule
         Label qualityRuleLabel = new Label("Quality rule", skin);
         optionsTable.add(qualityRuleLabel);
-        qualityRuleCheckBox = new CheckBox(null, skin);
-        optionsTable.add(qualityRuleCheckBox);
+        qualityRuleCustomCheckBox = new CustomCheckBox(null, skin);
+        optionsTable.add(qualityRuleCustomCheckBox);
         optionsTable.row();
 
         // Priority rule
         Label priorityRuleLabel = new Label("Priority rule", skin);
         optionsTable.add(priorityRuleLabel);
-        priorityRuleCheckBox = new CheckBox(null, skin);
-        optionsTable.add(priorityRuleCheckBox);
+        priorityRuleCustomCheckBox = new CustomCheckBox(null, skin);
+        optionsTable.add(priorityRuleCustomCheckBox);
         optionsTable.row();
     }
 
@@ -318,61 +322,61 @@ public class CustomGameScreen implements Screen {
         Variant.setCustomStartingPlayer(startingPlayerSpinner.getSelected());
         Variant.setCustomKingType(kingTypeSpinner.getSelected());
         Variant.setCustomKingsRowCapture(kingsRowCapturePromotionSpinner.getSelected());
-        Variant.setCustomRemovePiecesImmediately(removePiecesImmediatelyCheckBox.isChecked());
-        Variant.setCustomManCanCaptureKing(manCanCaptureKingCheckBox.isChecked());
-        Variant.setCustomQuantityRule(quantityRuleCheckBox.isChecked());
-        Variant.setCustomQualityRule(qualityRuleCheckBox.isChecked());
-        Variant.setCustomPriorityRule(priorityRuleCheckBox.isChecked());
+        Variant.setCustomRemovePiecesImmediately(removePiecesImmediatelyCustomCheckBox.isChecked());
+        Variant.setCustomManCanCaptureKing(manCanCaptureKingCustomCheckBox.isChecked());
+        Variant.setCustomQuantityRule(quantityRuleCustomCheckBox.isChecked());
+        Variant.setCustomQualityRule(qualityRuleCustomCheckBox.isChecked());
+        Variant.setCustomPriorityRule(priorityRuleCustomCheckBox.isChecked());
 
         ArrayList<RelativeDirection> manMoveDirections = new ArrayList<>();
-        if (manMoveDiagonalForwardCheckBox.isChecked())
+        if (manMoveDiagonalForwardCustomCheckBox.isChecked())
 			manMoveDirections.add(RelativeDirection.DIAGONAL_FORWARD);
-        if (manMoveDiagonalBackwardCheckBox.isChecked())
+        if (manMoveDiagonalBackwardCustomCheckBox.isChecked())
 			manMoveDirections.add(RelativeDirection.DIAGONAL_BACKWARD);
-        if (manMoveOrthogonalForwardCheckBox.isChecked())
+        if (manMoveOrthogonalForwardCustomCheckBox.isChecked())
 			manMoveDirections.add(RelativeDirection.ORTHOGONAL_FORWARD);
-        if (manMoveOrthogonalBackwardCheckBox.isChecked())
+        if (manMoveOrthogonalBackwardCustomCheckBox.isChecked())
 			manMoveDirections.add(RelativeDirection.ORTHOGONAL_BACKWARD);
-        if (manMoveOrthogonalSidewaysCheckBox.isChecked())
+        if (manMoveOrthogonalSidewaysCustomCheckBox.isChecked())
 			manMoveDirections.add(RelativeDirection.ORTHOGONAL_SIDEWAYS);
         Variant.setCustomManMovementDirections(manMoveDirections.toArray(new RelativeDirection[0]));
 
         ArrayList<RelativeDirection> kingMoveDirections = new ArrayList<>();
-        if (kingMoveDiagonalForwardCheckBox.isChecked())
+        if (kingMoveDiagonalForwardCustomCheckBox.isChecked())
 			kingMoveDirections.add(RelativeDirection.DIAGONAL_FORWARD);
-        if (kingMoveDiagonalBackwardCheckBox.isChecked())
+        if (kingMoveDiagonalBackwardCustomCheckBox.isChecked())
 			kingMoveDirections.add(RelativeDirection.DIAGONAL_BACKWARD);
-        if (kingMoveOrthogonalForwardCheckBox.isChecked())
+        if (kingMoveOrthogonalForwardCustomCheckBox.isChecked())
 			kingMoveDirections.add(RelativeDirection.ORTHOGONAL_FORWARD);
-        if (kingMoveOrthogonalBackwardCheckBox.isChecked())
+        if (kingMoveOrthogonalBackwardCustomCheckBox.isChecked())
 			kingMoveDirections.add(RelativeDirection.ORTHOGONAL_BACKWARD);
-        if (kingMoveOrthogonalSidewaysCheckBox.isChecked())
+        if (kingMoveOrthogonalSidewaysCustomCheckBox.isChecked())
 			kingMoveDirections.add(RelativeDirection.ORTHOGONAL_SIDEWAYS);
         Variant.setCustomKingMovementDirections(kingMoveDirections.toArray(new RelativeDirection[0]));
 
         ArrayList<RelativeDirection> manCaptureDirections = new ArrayList<>();
-        if (manCaptureDiagonalForwardCheckBox.isChecked())
+        if (manCaptureDiagonalForwardCustomCheckBox.isChecked())
 			manCaptureDirections.add(RelativeDirection.DIAGONAL_FORWARD);
-        if (manCaptureDiagonalBackwardCheckBox.isChecked())
+        if (manCaptureDiagonalBackwardCustomCheckBox.isChecked())
 			manCaptureDirections.add(RelativeDirection.DIAGONAL_BACKWARD);
-        if (manCaptureOrthogonalForwardCheckBox.isChecked())
+        if (manCaptureOrthogonalForwardCustomCheckBox.isChecked())
 			manCaptureDirections.add(RelativeDirection.ORTHOGONAL_FORWARD);
-        if (manCaptureOrthogonalBackwardCheckBox.isChecked())
+        if (manCaptureOrthogonalBackwardCustomCheckBox.isChecked())
 			manCaptureDirections.add(RelativeDirection.ORTHOGONAL_BACKWARD);
-        if (manCaptureOrthogonalSidewaysCheckBox.isChecked())
+        if (manCaptureOrthogonalSidewaysCustomCheckBox.isChecked())
 			manCaptureDirections.add(RelativeDirection.ORTHOGONAL_SIDEWAYS);
         Variant.setCustomManCaptureDirections(manCaptureDirections.toArray(new RelativeDirection[0]));
 
         ArrayList<RelativeDirection> kingCaptureDirections = new ArrayList<>();
-        if (kingCaptureDiagonalForwardCheckBox.isChecked())
+        if (kingCaptureDiagonalForwardCustomCheckBox.isChecked())
 			kingCaptureDirections.add(RelativeDirection.DIAGONAL_FORWARD);
-        if (kingCaptureDiagonalBackwardCheckBox.isChecked())
+        if (kingCaptureDiagonalBackwardCustomCheckBox.isChecked())
 			kingCaptureDirections.add(RelativeDirection.DIAGONAL_BACKWARD);
-        if (kingCaptureOrthogonalForwardCheckBox.isChecked())
+        if (kingCaptureOrthogonalForwardCustomCheckBox.isChecked())
 			kingCaptureDirections.add(RelativeDirection.ORTHOGONAL_FORWARD);
-        if (kingCaptureOrthogonalBackwardCheckBox.isChecked())
+        if (kingCaptureOrthogonalBackwardCustomCheckBox.isChecked())
 			kingCaptureDirections.add(RelativeDirection.ORTHOGONAL_BACKWARD);
-        if (kingCaptureOrthogonalSidewaysCheckBox.isChecked())
+        if (kingCaptureOrthogonalSidewaysCustomCheckBox.isChecked())
 			kingCaptureDirections.add(RelativeDirection.ORTHOGONAL_SIDEWAYS);
         Variant.setCustomKingCaptureDirections(kingCaptureDirections.toArray(new RelativeDirection[0]));
     }

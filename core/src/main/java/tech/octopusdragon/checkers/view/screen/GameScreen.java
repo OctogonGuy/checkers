@@ -1,4 +1,4 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import tech.octopusdragon.checkers.data.SessionData;
+import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.*;
 import tech.octopusdragon.checkers.model.rules.BoardPattern;
 

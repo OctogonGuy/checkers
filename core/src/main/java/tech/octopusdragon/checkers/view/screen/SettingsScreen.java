@@ -1,4 +1,4 @@
-package tech.octopusdragon.checkers;
+package tech.octopusdragon.checkers.view.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,9 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import tech.octopusdragon.checkers.data.SessionData;
+import tech.octopusdragon.checkers.data.UIStyle;
+import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.PlayerType;
+import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
 
 public class SettingsScreen implements Screen {
     private final Stage stage;
@@ -128,15 +132,15 @@ public class SettingsScreen implements Screen {
         settingsTable.row();
 
         // Highlight moves check box
-        CheckBox highlightMovesCheckBox = new CheckBox("Highlight moves", skin);
-        highlightMovesCheckBox.setChecked(UserData.highlightMoves);
-        highlightMovesCheckBox.addListener(new ClickListener() {
+        CustomCheckBox highlightMovesCustomCheckBox = new CustomCheckBox("Highlight moves", skin);
+        highlightMovesCustomCheckBox.setChecked(UserData.highlightMoves);
+        highlightMovesCustomCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                UserData.highlightMoves = highlightMovesCheckBox.isChecked();
+                UserData.highlightMoves = highlightMovesCustomCheckBox.isChecked();
             }
         });
-        settingsTable.add(highlightMovesCheckBox).colspan(3);
+        settingsTable.add(highlightMovesCustomCheckBox).colspan(3);
         settingsTable.row();
 
         // Players
@@ -154,25 +158,25 @@ public class SettingsScreen implements Screen {
             }
         });
         playerSettingsTable.add(topPlayerImage).size(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE).spaceTop(0);
-        CheckBox topHumanCheckBox = new CheckBox("Human", skin);
-        topHumanCheckBox.setChecked(!UserData.topPlayerComputer);
-        topHumanCheckBox.addListener(new ClickListener() {
+        CustomCheckBox topHumanCustomCheckBox = new CustomCheckBox("Human", skin);
+        topHumanCustomCheckBox.setChecked(!UserData.topPlayerComputer);
+        topHumanCustomCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                UserData.topPlayerComputer = !topHumanCheckBox.isChecked();
+                UserData.topPlayerComputer = !topHumanCustomCheckBox.isChecked();
             }
         });
-        playerSettingsTable.add(topHumanCheckBox);
-        CheckBox topComputerCheckBox = new CheckBox("Computer", skin);
-        topComputerCheckBox.setChecked(UserData.topPlayerComputer);
-        topComputerCheckBox.addListener(new ClickListener() {
+        playerSettingsTable.add(topHumanCustomCheckBox);
+        CustomCheckBox topComputerCustomCheckBox = new CustomCheckBox("Computer", skin);
+        topComputerCustomCheckBox.setChecked(UserData.topPlayerComputer);
+        topComputerCustomCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                UserData.topPlayerComputer = topComputerCheckBox.isChecked();
+                UserData.topPlayerComputer = topComputerCustomCheckBox.isChecked();
             }
         });
-        playerSettingsTable.add(topComputerCheckBox).spaceTop(0);
-        ButtonGroup<CheckBox> topPlayerGroup = new ButtonGroup<>(topHumanCheckBox, topComputerCheckBox);
+        playerSettingsTable.add(topComputerCustomCheckBox).spaceTop(0);
+        ButtonGroup<CustomCheckBox> topPlayerGroup = new ButtonGroup<>(topHumanCustomCheckBox, topComputerCustomCheckBox);
         topPlayerGroup.setMaxCheckCount(1);
         playerSettingsTable.row();
         Label bottomPlayerLabel = new Label("Bottom player", skin);
@@ -186,25 +190,25 @@ public class SettingsScreen implements Screen {
             }
         });
         playerSettingsTable.add(bottomPlayerImage).size(PLAYER_IMAGE_SIZE, PLAYER_IMAGE_SIZE);
-        CheckBox bottomHumanCheckBox = new CheckBox("Human", skin);
-        bottomHumanCheckBox.setChecked(!UserData.bottomPlayerComputer);
-        bottomHumanCheckBox.addListener(new ClickListener() {
+        CustomCheckBox bottomHumanCustomCheckBox = new CustomCheckBox("Human", skin);
+        bottomHumanCustomCheckBox.setChecked(!UserData.bottomPlayerComputer);
+        bottomHumanCustomCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                UserData.bottomPlayerComputer = !bottomHumanCheckBox.isChecked();
+                UserData.bottomPlayerComputer = !bottomHumanCustomCheckBox.isChecked();
             }
         });
-        playerSettingsTable.add(bottomHumanCheckBox);
-        CheckBox bottomComputerCheckBox = new CheckBox("Computer", skin);
-        bottomComputerCheckBox.setChecked(UserData.bottomPlayerComputer);
-        bottomComputerCheckBox.addListener(new ClickListener() {
+        playerSettingsTable.add(bottomHumanCustomCheckBox);
+        CustomCheckBox bottomComputerCustomCheckBox = new CustomCheckBox("Computer", skin);
+        bottomComputerCustomCheckBox.setChecked(UserData.bottomPlayerComputer);
+        bottomComputerCustomCheckBox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                UserData.bottomPlayerComputer = bottomComputerCheckBox.isChecked();
+                UserData.bottomPlayerComputer = bottomComputerCustomCheckBox.isChecked();
             }
         });
-        playerSettingsTable.add(bottomComputerCheckBox);
-        ButtonGroup<CheckBox> bottomPlayerGroup = new ButtonGroup<>(bottomHumanCheckBox, bottomComputerCheckBox);
+        playerSettingsTable.add(bottomComputerCustomCheckBox);
+        ButtonGroup<CustomCheckBox> bottomPlayerGroup = new ButtonGroup<>(bottomHumanCustomCheckBox, bottomComputerCustomCheckBox);
         bottomPlayerGroup.setMaxCheckCount(1);
         settingsTable.add(playerSettingsTable);
         settingsTable.row();

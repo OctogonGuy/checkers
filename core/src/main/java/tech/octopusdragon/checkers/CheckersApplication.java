@@ -3,6 +3,8 @@ package tech.octopusdragon.checkers;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import tech.octopusdragon.checkers.data.SessionData;
+import tech.octopusdragon.checkers.view.screen.NewGameScreen;
 
 import java.lang.reflect.InvocationTargetException;
 
