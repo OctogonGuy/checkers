@@ -90,7 +90,7 @@ public class SettingsScreen implements Screen {
         settingsTable.row();
 
         // Undo
-        HorizontalGroup undoRedoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
+        HorizontalGroup undoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
         CustomButton undoButton = new CustomButton("Undo", skin);
         undoButton.addListener(new ClickListener() {
             @Override
@@ -98,7 +98,7 @@ public class SettingsScreen implements Screen {
                 UserData.game.undoTurn();
             }
         });
-        undoRedoButtons.addActor(undoButton);
+        undoButtons.addActor(undoButton);
 
         // Undo all
         CustomButton undoAllButton = new CustomButton("Undo all", skin);
@@ -108,9 +108,12 @@ public class SettingsScreen implements Screen {
                 UserData.game.undoAllTurns();
             }
         });
-        undoRedoButtons.addActor(undoAllButton);
+        undoButtons.addActor(undoAllButton);
+        settingsTable.add(undoButtons);
+        settingsTable.row();
 
         // Redo
+        HorizontalGroup redoButtons = new HorizontalGroup().space(UIStyle.H_SPACING);
         CustomButton redoButton = new CustomButton("Redo", skin);
         redoButton.addListener(new ClickListener() {
             @Override
@@ -118,7 +121,7 @@ public class SettingsScreen implements Screen {
                 UserData.game.redoTurn();
             }
         });
-        undoRedoButtons.addActor(redoButton);
+        redoButtons.addActor(redoButton);
 
         // Redo all
         CustomButton redoAllButton = new CustomButton("Redo all", skin);
@@ -128,8 +131,8 @@ public class SettingsScreen implements Screen {
                 UserData.game.redoAllTurns();
             }
         });
-        undoRedoButtons.addActor(redoAllButton);
-        settingsTable.add(undoRedoButtons);
+        redoButtons.addActor(redoAllButton);
+        settingsTable.add(redoButtons);
         settingsTable.row();
 
         // Highlight moves check box
