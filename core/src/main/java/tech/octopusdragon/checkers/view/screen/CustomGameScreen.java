@@ -18,6 +18,7 @@ import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
 import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
+import tech.octopusdragon.checkers.view.widget.HeaderLabel;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -70,6 +71,12 @@ public class CustomGameScreen implements Screen {
         table.defaults().padTop(UIStyle.V_SPACING);
         stage.addActor(table);
 
+        // Header
+        HeaderLabel header = new HeaderLabel("Custom Game", skin);
+        table.add(header).padTop(0);
+        table.row();
+
+        // Options table
         Table optionsTable = new Table();
         optionsTable.columnDefaults(0).left();
         optionsTable.defaults().expandX().padTop(UIStyle.V_SPACING);

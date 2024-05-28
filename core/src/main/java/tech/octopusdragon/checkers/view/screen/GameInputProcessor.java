@@ -37,7 +37,7 @@ public class GameInputProcessor extends InputAdapter {
         // Detect menu button touch
         if (gameScreen.menuButton.getBoundingRectangle().contains(new Vector2(
             screenX, gameScreen.viewport.getScreenHeight() - screenY))) {
-            application.setScreen(new SettingsScreen());
+            application.setScreen(new OptionsScreen());
             return true;
         }
 

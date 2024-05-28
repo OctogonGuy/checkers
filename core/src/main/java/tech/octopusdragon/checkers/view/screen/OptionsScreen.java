@@ -20,8 +20,9 @@ import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
 import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
+import tech.octopusdragon.checkers.view.widget.HeaderLabel;
 
-public class SettingsScreen implements Screen {
+public class OptionsScreen implements Screen {
     private final Stage stage;
     private final Skin skin;
     private final Texture whitePieceTexture;
@@ -30,7 +31,7 @@ public class SettingsScreen implements Screen {
     private final Image bottomPlayerImage;
     private static final float PLAYER_IMAGE_SIZE = 40f;
 
-    public SettingsScreen() {
+    public OptionsScreen() {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -45,13 +46,20 @@ public class SettingsScreen implements Screen {
         table.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         table.defaults().padTop(UIStyle.V_SPACING);
         stage.addActor(table);
+
+        // Header
+        HeaderLabel header = new HeaderLabel("Options", skin);
+        table.add(header).padTop(0);
+        table.row();
+
+        // Settings table
         Table settingsTable = new Table();
         settingsTable.setFillParent(true);
         settingsTable.defaults().padTop(UIStyle.V_SPACING);
         settingsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         settingsTable.setBackground(skin.getDrawable("innerColor"));
         CustomScrollPane scrollPane = new CustomScrollPane(settingsTable, skin);
-        table.add(scrollPane).padTop(0).expand().fill();
+        table.add(scrollPane).expand().fill();
         table.row();
 
         // New game
