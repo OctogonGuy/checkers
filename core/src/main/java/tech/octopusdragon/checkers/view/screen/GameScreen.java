@@ -590,7 +590,7 @@ public class GameScreen implements Screen {
                     captureAnimating.put(capturedPosition, true);
                 }
             }
-            // Make the actual move in the UserData.game
+            // Make the actual move in the game
             if (moveAnimationTimeLeft <= 0) {
                 if (!captures.isEmpty() &&  !UserData.game.getVariant().isHuffing()) {
                     if (!UserData.game.getVariant().isRemovePiecesImmediately()
@@ -622,7 +622,6 @@ public class GameScreen implements Screen {
                 if (UserData.game.getVariant().isHuffing() && UserData.game.hasCaptured())
                     selectedSpace = curMove.getToPos();
                 curMove = null;
-                Position clickedSpace = clickedSpace();
             }
             movingPiece.draw(batch);
             batch.disableBlending();
@@ -707,7 +706,7 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Displays appropriate messages regarding the current player or state of the UserData.game
+     * Displays appropriate messages regarding the current player or state of the game
      */
     protected void changeMessage() {
         for (PlayerType playerType : PlayerType.values()) {
