@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class CustomScrollPane extends ScrollPane {
     public CustomScrollPane(Actor actor, Skin skin) {
         super(actor, skin);
+        setScrollbarsVisible(true);
+        setFadeScrollBars(false);
         addListener(new InputListener() {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 getStage().setScrollFocus(CustomScrollPane.this);
