@@ -12,15 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.PlayerType;
 import tech.octopusdragon.checkers.model.Variant;
 import tech.octopusdragon.checkers.model.rules.StartingPlayer;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
+import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
 
 public class NewGameScreen implements Screen {
     private final Stage stage;
@@ -124,7 +125,7 @@ public class NewGameScreen implements Screen {
         // Variant list
         List<Variant> list = new List<>(skin);
         list.setItems(Variant.values());
-        ScrollPane listScrollPane = new ScrollPane(list);
+        CustomScrollPane listScrollPane = new CustomScrollPane(list, skin);
         table.add(listScrollPane).expand().fill().maxWidth(UIStyle.MAX_WIDTH);
         table.row();
 

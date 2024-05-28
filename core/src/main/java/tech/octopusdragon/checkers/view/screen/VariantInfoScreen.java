@@ -6,14 +6,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
+import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
 import tech.octopusdragon.checkers.view.widget.HeaderLabel;
 
 import java.util.Arrays;
@@ -45,7 +49,7 @@ public class VariantInfoScreen implements Screen {
         infoTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         infoTable.columnDefaults(0).align(Align.left);
         infoTable.setBackground(skin.getDrawable("innerColor"));
-        ScrollPane scrollPane = new ScrollPane(infoTable);
+        CustomScrollPane scrollPane = new CustomScrollPane(infoTable, skin);
         table.add(scrollPane).expand().fill();
         table.row();
 

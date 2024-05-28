@@ -9,14 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.RelativeDirection;
 import tech.octopusdragon.checkers.model.Variant;
 import tech.octopusdragon.checkers.model.rules.*;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
+import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -74,7 +75,7 @@ public class CustomGameScreen implements Screen {
         optionsTable.defaults().expandX().padTop(UIStyle.V_SPACING);
         optionsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         optionsTable.setBackground(skin.getDrawable("innerColor"));
-        ScrollPane optionsTableScrollPane = new ScrollPane(optionsTable);
+        CustomScrollPane optionsTableScrollPane = new CustomScrollPane(optionsTable, skin);
         table.add(optionsTableScrollPane).expand().fill();
         table.row();
 

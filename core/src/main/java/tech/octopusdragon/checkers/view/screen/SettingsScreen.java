@@ -12,13 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import tech.octopusdragon.checkers.data.SessionData;
-import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.data.UserData;
 import tech.octopusdragon.checkers.model.Board;
 import tech.octopusdragon.checkers.model.Checkers;
 import tech.octopusdragon.checkers.model.PlayerType;
+import tech.octopusdragon.checkers.view.style.UIStyle;
 import tech.octopusdragon.checkers.view.widget.CustomButton;
 import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
+import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
 
 public class SettingsScreen implements Screen {
     private final Stage stage;
@@ -49,7 +50,7 @@ public class SettingsScreen implements Screen {
         settingsTable.defaults().padTop(UIStyle.V_SPACING);
         settingsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         settingsTable.setBackground(skin.getDrawable("innerColor"));
-        ScrollPane scrollPane = new ScrollPane(settingsTable);
+        CustomScrollPane scrollPane = new CustomScrollPane(settingsTable, skin);
         table.add(scrollPane).padTop(0).expand().fill();
         table.row();
 
