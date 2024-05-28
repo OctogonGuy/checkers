@@ -204,7 +204,8 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         // Font size
         try {
-            font.getData().setScale(Math.min(height, width) / FONT_LINE_HEIGHT / FONT_HEIGHT * 3);
+            font.getData().setScale(
+                2*(Math.min(height, width) + FONT_LINE_HEIGHT + FONT_HEIGHT) / FONT_LINE_HEIGHT / FONT_HEIGHT);
         } catch (IllegalArgumentException ignored) { }
         // Menu button size
         menuButton.setScale(font.getScaleX());
