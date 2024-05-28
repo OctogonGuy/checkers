@@ -693,10 +693,13 @@ public class Checkers implements Serializable {
 	 * last turn
 	 */
 	public void undoTurn() {
+        undoMove();
 		Player lastMovedPlayer = getCurPlayer();
 		while (getCurPlayer() == lastMovedPlayer) {
+            System.out.println(lastMovedPlayer);
 			setState(history.previous(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiecePos());
 		}
+        redoMove();
 	}
 
 
@@ -707,6 +710,14 @@ public class Checkers implements Serializable {
 	public void undoAllTurns() {
 		setState(history.first(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiecePos());
 	}
+
+
+    /**
+     * Goes forward a move and restores the board to the state it was in during
+     */
+    public void redoMove() {
+        setState(history.next(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiecePos());
+    }
 
 
 	/**

@@ -43,8 +43,7 @@ public class GameInputProcessor extends InputAdapter {
 
         Position clickedSpace = gameScreen.clickedSpace();
 
-        if (button != Input.Buttons.LEFT || pointer > 0 || gameScreen.animating
-            || !gameScreen.clickedOnPiece) return false;
+        if (button != Input.Buttons.LEFT || pointer > 0 || gameScreen.animating) return false;
 
         if (!gameScreen.dragging) {
             // Confirm huffing piece

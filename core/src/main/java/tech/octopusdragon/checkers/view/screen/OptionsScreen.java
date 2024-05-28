@@ -79,6 +79,7 @@ public class OptionsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 UserData.game = new Checkers(UserData.game.getVariant());
+                SessionData.application.lastScreen();
             }
         });
         startButtons.addActor(restartButton);
@@ -105,6 +106,7 @@ public class OptionsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 UserData.game.undoTurn();
+                SessionData.application.lastScreen();
             }
         });
         undoButtons.addActor(undoButton);
@@ -115,6 +117,7 @@ public class OptionsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 UserData.game.undoAllTurns();
+                SessionData.application.lastScreen();
             }
         });
         undoButtons.addActor(undoAllButton);
@@ -128,6 +131,7 @@ public class OptionsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 UserData.game.redoTurn();
+                SessionData.application.lastScreen();
             }
         });
         redoButtons.addActor(redoButton);
@@ -138,6 +142,7 @@ public class OptionsScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 UserData.game.redoAllTurns();
+                SessionData.application.lastScreen();
             }
         });
         redoButtons.addActor(redoAllButton);
