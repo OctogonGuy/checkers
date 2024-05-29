@@ -172,9 +172,9 @@ default-window
   index: -1
 selection
   rotate: false
-  xy: 174, 48
-  size: 1, 1
-  orig: 1, 1
+  xy: 174, 35
+  size: 14, 14
+  orig: 14, 14
   offset: 0, 0
   index: -1
 tree-minus
