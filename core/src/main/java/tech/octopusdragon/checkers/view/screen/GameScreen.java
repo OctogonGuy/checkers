@@ -178,7 +178,7 @@ public class GameScreen implements Screen {
         oscillateHighlight(deltaTime);
         countDownMoveAnimationTimeLeft(deltaTime);
         countDownMultiCaptureAnimation(deltaTime);
-        computerMove();
+        determineComputerMove();
         makeComputerMove();
 
         Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
@@ -309,6 +309,21 @@ public class GameScreen implements Screen {
             changeMessage(messageToRender);
         }
 
+        // Draw the piece graphics
+        Texture topGraphic, bottomGraphic;
+        PlayerType topPlayerType = UserData.game.getTopPlayer().getType();
+        PlayerType bottomPlayerType = UserData.game.getBottomPlayer().getType();
+        PlayerType curPlayerType = UserData.game.getCurPlayer().getType();;
+        // If game is over, draw each player's piece
+        if (UserData.game.isOver()) {
+            topGraphic = topPlayerType == PlayerType.BLACK ? blackManPiece : whiteManPiece;
+            bottomGraphic = bottomPlayerType == PlayerType.BLACK ? blackManPiece : whiteManPiece;
+        }
+        // Otherwise, draw the current player's piece
+        else {
+            topGraphic = bottomGraphic = curPlayerType == PlayerType.BLACK ? blackManPiece : whiteManPiece;
+        }
+        // Draw the piece graphics
         topViewport.apply();
         batch.setProjectionMatrix(topViewport.getCamera().combined);
         batch.begin();
@@ -316,7 +331,7 @@ public class GameScreen implements Screen {
         font.draw(batch, topGlyphLayout,
             topViewport.getWorldWidth() - topGlyphLayout.width - topGlyphLayout.height * 4,
             topViewport.getWorldHeight() / 2 + topGlyphLayout.height / 2);
-        batch.draw(UserData.game.getCurPlayer().getType() == PlayerType.BLACK ? blackManPiece : whiteManPiece,
+        batch.draw(topGraphic,
             topViewport.getWorldWidth() - topGlyphLayout.height * 3,
             topViewport.getWorldHeight() / 2 - topGlyphLayout.height,
             topGlyphLayout.height * 2,
@@ -330,7 +345,7 @@ public class GameScreen implements Screen {
         font.draw(batch, bottomGlyphLayout,
             bottomViewport.getWorldWidth() - bottomGlyphLayout.width - bottomGlyphLayout.height * 4,
             bottomViewport.getWorldHeight() / 2 + bottomGlyphLayout.height / 2);
-        batch.draw(UserData.game.getCurPlayer().getType() == PlayerType.BLACK ? blackManPiece : whiteManPiece,
+        batch.draw(bottomGraphic,
             topViewport.getWorldWidth() - bottomGlyphLayout.height * 3,
             topViewport.getWorldHeight() / 2 - bottomGlyphLayout.height,
             bottomGlyphLayout.height * 2,
@@ -416,7 +431,7 @@ public class GameScreen implements Screen {
      * Draws a highlight graphic for movable pieces or spaces
      */
     protected void renderHighlight() {
-        if (UserData.highlightMoves && !animating && !computerMoving) {
+        if (UserData.highlightMoves && !animating && !computerMoving && !UserData.game.isOver()) {
             boardViewport.apply();
             batch.setProjectionMatrix(boardViewport.getCamera().combined);
             batch.begin();
@@ -453,7 +468,7 @@ public class GameScreen implements Screen {
      * Draws a select graphic for the selected piece if there is one
      */
     protected void renderSelect() {
-        if (selectedSpace != null && !animating && !dragging && !computerMoving
+        if (selectedSpace != null && !animating && !dragging && !computerMoving && !UserData.game.isOver()
             && (!UserData.game.hasCaptured() || !UserData.game.getVariant().isHuffing())) {
             boardViewport.apply();
             batch.setProjectionMatrix(boardViewport.getCamera().combined);
@@ -472,7 +487,7 @@ public class GameScreen implements Screen {
      * Draws a confirmation graphic for a piece that has captured if huffing rules apply
      */
     protected void renderHuffingConfirm() {
-        if (selectedSpace != null && !animating && !dragging && !computerMoving
+        if (selectedSpace != null && !animating && !dragging && !computerMoving && !UserData.game.isOver()
             && UserData.game.hasCaptured() && UserData.game.getVariant().isHuffing()) {
             boardViewport.apply();
             batch.setProjectionMatrix(boardViewport.getCamera().combined);
@@ -873,8 +888,8 @@ public class GameScreen implements Screen {
     /**
      * Makes computer player play move
      */
-    private void computerMove() {
-        if (animating || !captures.isEmpty() || computerMoving
+    private void determineComputerMove() {
+        if (animating || !captures.isEmpty() || computerMoving || UserData.game.isOver()
             || !(UserData.game.getCurPlayer() == UserData.game.topPlayer() && UserData.topPlayerComputer ||
             UserData.game.getCurPlayer() == UserData.game.bottomPlayer() && UserData.bottomPlayerComputer)) return;
 
@@ -915,7 +930,7 @@ public class GameScreen implements Screen {
      * Makes and animates the computer move if there is one
      */
     private void makeComputerMove() {
-        if (computerMove != null) {
+        if (computerMove != null && !UserData.game.isOver()) {
             selectedSpace = computerMove.getFromPos();
             move(computerMove);
             computerMove = null;

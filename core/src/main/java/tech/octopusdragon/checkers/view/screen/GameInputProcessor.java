@@ -22,6 +22,7 @@ public class GameInputProcessor extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (UserData.game.isOver()) return false;
         Position clickedSpace = gameScreen.clickedSpace();
         gameScreen.clickedOnPiece = clickedSpace != null
                 && (UserData.game.getBoard().getPiece(clickedSpace) != null
@@ -41,9 +42,9 @@ public class GameInputProcessor extends InputAdapter {
             return true;
         }
 
-        Position clickedSpace = gameScreen.clickedSpace();
+        if (button != Input.Buttons.LEFT || pointer > 0 || gameScreen.animating || UserData.game.isOver()) return false;
 
-        if (button != Input.Buttons.LEFT || pointer > 0 || gameScreen.animating) return false;
+        Position clickedSpace = gameScreen.clickedSpace();
 
         if (!gameScreen.dragging) {
             // Confirm huffing piece
@@ -146,7 +147,8 @@ public class GameInputProcessor extends InputAdapter {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (!gameScreen.clickedOnPiece) return false;
+        if (!gameScreen.clickedOnPiece || UserData.game.isOver()) return false;
+
         Position clickedSpace = gameScreen.clickedSpace();
 
         // Select piece
