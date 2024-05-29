@@ -607,15 +607,11 @@ public class GameScreen implements Screen {
             }
             // Make the actual move in the game
             if (moveAnimationTimeLeft <= 0) {
-                if (!captures.isEmpty() &&  !UserData.game.getVariant().isHuffing()) {
-                    if (!UserData.game.getVariant().isRemovePiecesImmediately()
-                        && !UserData.game.canMultiCapture(UserData.game.getBoard().getPiece(curMove.getFromPos()))) {
+                if (!captures.isEmpty() &&  !UserData.game.getVariant().isHuffing()
+                    && (UserData.game.getVariant().isRemovePiecesImmediately()
+                        || !UserData.game.canMultiCapture(UserData.game.getBoard().getPiece(curMove.getFromPos())))) {
                         captureAnimating.put(captures.removeFirst(), true);
                         timeUntilNextCaptureAnimation = MULTI_CAPTURE_INTERVAL;
-                    }
-                    else {
-                        captureAnimating.put(captures.removeFirst(), true);
-                    }
                 }
                 animating = false;
                 UserData.game.move(curMove);

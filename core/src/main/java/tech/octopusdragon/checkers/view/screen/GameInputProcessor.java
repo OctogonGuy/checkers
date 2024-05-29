@@ -110,15 +110,12 @@ public class GameInputProcessor extends InputAdapter {
                             gameScreen.captures.add(capturePos);
                         }
                         if (!UserData.game.getVariant().isHuffing()
-                            && !UserData.game.getVariant().isRemovePiecesImmediately()
                             && !gameScreen.captures.isEmpty()
-                            && !UserData.game.canMultiCapture(
-                                UserData.game.getBoard().getPiece(gameScreen.selectedSpace))) {
+                            && (UserData.game.getVariant().isRemovePiecesImmediately()
+                            || !UserData.game.canMultiCapture(
+                                UserData.game.getBoard().getPiece(gameScreen.selectedSpace)))) {
                             gameScreen.captureAnimating.put(gameScreen.captures.removeFirst(), true);
                             gameScreen.timeUntilNextCaptureAnimation = GameScreen.MULTI_CAPTURE_INTERVAL;
-                        }
-                        else if (!UserData.game.getVariant().isHuffing() && !gameScreen.captures.isEmpty()) {
-                            gameScreen.captureAnimating.put(gameScreen.captures.removeFirst(), true);
                         }
                     }
                 }
