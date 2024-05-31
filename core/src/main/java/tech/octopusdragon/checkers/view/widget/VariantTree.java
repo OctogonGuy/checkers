@@ -41,11 +41,48 @@ public class VariantTree extends Table {
         }
     }
 
+    /**
+     * @return The selected variant
+     */
     public Variant getSelected() {
         for (Actor node : getChildren()) {
             if (node instanceof VariantNode variantNode && variantNode.getSelected() != null)
                 return variantNode.getSelected();
         }
         return null;
+    }
+
+    /**
+     * Sets the selected variant
+     * @param variant The variant to select
+     */
+    public void setSelected(Variant variant) {
+        for (int i = 0; i < getChildren().size; i++) {
+            Actor node = getChildren().get(i);
+            if (node instanceof VariantNode variantNode && variantNode.getItems().contains(variant, true)) {
+                variantNode.setSelected(variant);
+            }
+        }
+    }
+
+    /**
+     * @return The y-value of the selected item
+     */
+    public float getSelectedY() {
+        Variant selVar = getSelected();
+        for (int i = 0; i < getChildren().size; i++) {
+            Actor node = getChildren().get(i);
+            if (node instanceof VariantNode variantNode && variantNode.getItems().contains(selVar, true)) {
+                validate();
+                variantNode.validate();
+                return variantNode.getY()
+                    + getPrefHeight() / 2
+                    + (variantNode.getPrefHeight()
+                        * (variantNode.getItems().size - variantNode.getSelectedIndex() + 1)
+                        / variantNode.getItems().size)
+                    + variantNode.getPrefHeight() / variantNode.getItems().size / 2;
+            }
+        }
+        return 0;
     }
 }

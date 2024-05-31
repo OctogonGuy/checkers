@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import tech.octopusdragon.checkers.data.SessionData;
@@ -95,7 +97,8 @@ public class NewGameScreen implements Screen {
         CustomCheckBox topComputerCustomCheckBox = new CustomCheckBox("Computer", skin);
         topComputerCustomCheckBox.setChecked(UserData.topPlayerComputer);
         playerSettingsTable.add(topComputerCustomCheckBox).spaceTop(0);
-        ButtonGroup<CustomCheckBox> topPlayerGroup = new ButtonGroup<>(topHumanCustomCheckBox, topComputerCustomCheckBox);
+        ButtonGroup<CustomCheckBox> topPlayerGroup = new ButtonGroup<>(
+            topHumanCustomCheckBox, topComputerCustomCheckBox);
         topPlayerGroup.setMaxCheckCount(1);
         playerSettingsTable.row();
         Label bottomPlayerLabel = new Label("Bottom player", skin);
@@ -115,14 +118,24 @@ public class NewGameScreen implements Screen {
         CustomCheckBox bottomComputerCustomCheckBox = new CustomCheckBox("Computer", skin);
         bottomComputerCustomCheckBox.setChecked(UserData.bottomPlayerComputer);
         playerSettingsTable.add(bottomComputerCustomCheckBox);
-        ButtonGroup<CustomCheckBox> bottomPlayerGroup = new ButtonGroup<>(bottomHumanCustomCheckBox, bottomComputerCustomCheckBox);
+        ButtonGroup<CustomCheckBox> bottomPlayerGroup = new ButtonGroup<>(
+            bottomHumanCustomCheckBox, bottomComputerCustomCheckBox);
         bottomPlayerGroup.setMaxCheckCount(1);
         table.add(playerSettingsTable);
         table.row();
 
-        // Variant tree (family parent, variant child)
+        // Variant tree
         VariantTree variantTree = new VariantTree(skin);
+        variantTree.setSelected(UserData.selectedVariant);
+        variantTree.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                UserData.selectedVariant = variantTree.getSelected();
+                System.out.println(UserData.selectedVariant);
+            }
+        });
         CustomScrollPane listScrollPane = new CustomScrollPane(variantTree, skin);
+        listScrollPane.scrollTo(0, variantTree.getSelectedY(), 0, 0);
         table.add(listScrollPane).expand().fill().maxWidth(UIStyle.MAX_WIDTH);
         table.row();
 
