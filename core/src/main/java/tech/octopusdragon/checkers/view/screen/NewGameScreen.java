@@ -19,9 +19,7 @@ import tech.octopusdragon.checkers.model.PlayerType;
 import tech.octopusdragon.checkers.model.Variant;
 import tech.octopusdragon.checkers.model.rules.StartingPlayer;
 import tech.octopusdragon.checkers.view.style.UIStyle;
-import tech.octopusdragon.checkers.view.widget.CustomButton;
-import tech.octopusdragon.checkers.view.widget.CustomCheckBox;
-import tech.octopusdragon.checkers.view.widget.CustomScrollPane;
+import tech.octopusdragon.checkers.view.widget.*;
 
 public class NewGameScreen implements Screen {
     private final Stage stage;
@@ -122,10 +120,9 @@ public class NewGameScreen implements Screen {
         table.add(playerSettingsTable);
         table.row();
 
-        // Variant list
-        List<Variant> list = new List<>(skin);
-        list.setItems(Variant.values());
-        CustomScrollPane listScrollPane = new CustomScrollPane(list, skin);
+        // Variant tree (family parent, variant child)
+        VariantTree variantTree = new VariantTree(skin);
+        CustomScrollPane listScrollPane = new CustomScrollPane(variantTree, skin);
         table.add(listScrollPane).expand().fill().maxWidth(UIStyle.MAX_WIDTH);
         table.row();
 
@@ -138,11 +135,11 @@ public class NewGameScreen implements Screen {
                 UserData.topPlayer = topPlayer;
                 UserData.topPlayerComputer = topComputerCustomCheckBox.isChecked();
                 UserData.bottomPlayerComputer = bottomComputerCustomCheckBox.isChecked();
-                if (list.getSelected() == Variant.CUSTOM) {
+                if (variantTree.getSelected() == Variant.CUSTOM) {
                     SessionData.application.setScreen(new CustomGameScreen());
                 }
                 else {
-                    UserData.game = new Checkers(list.getSelected());
+                    UserData.game = new Checkers(variantTree.getSelected());
                     if (UserData.game.getVariant().getStartingPlayer() == StartingPlayer.EITHER)
                         SessionData.application.setScreen(new StartingPlayerScreen());
                     else
@@ -155,7 +152,7 @@ public class NewGameScreen implements Screen {
         infoButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                SessionData.application.setScreen(new VariantInfoScreen(list.getSelected()));
+                SessionData.application.setScreen(new VariantInfoScreen(variantTree.getSelected()));
             }
         });
         buttonBar.addActor(infoButton);

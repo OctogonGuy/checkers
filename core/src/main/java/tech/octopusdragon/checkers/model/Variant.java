@@ -1,17 +1,11 @@
 package tech.octopusdragon.checkers.model;
 
+import tech.octopusdragon.checkers.model.rules.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import tech.octopusdragon.checkers.model.rules.BoardPattern;
-import tech.octopusdragon.checkers.model.rules.KingType;
-import tech.octopusdragon.checkers.model.rules.KingVKingAutomaticDrawRule;
-import tech.octopusdragon.checkers.model.rules.KingVKingDrawRule;
-import tech.octopusdragon.checkers.model.rules.KingsRowCapture;
-import tech.octopusdragon.checkers.model.rules.StartingPlayer;
-import tech.octopusdragon.checkers.model.rules.StartingPositions;
 
 /**
  * Represents a variant of checkers
@@ -700,6 +694,7 @@ public enum Variant {
 
 		// --- Custom variant ---
 		CUSTOM.setName("Custom");
+        CUSTOM.setFamily(Family.CUSTOM);
 
 	}
 

@@ -12,7 +12,8 @@ public enum Family {
 	FRISIAN,
 	SPANISH,
 	MISCELLANEOUS,
-	SPECIAL;
+	SPECIAL,
+    CUSTOM;
 
 	@Override
 	public String toString() {

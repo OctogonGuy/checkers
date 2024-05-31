@@ -13,4 +13,6 @@ public class UIStyle {
     public static final float CHECK_BOX_SPACING = 6;
     public static final float BUTTON_PADDING_V = 4;
     public static final float BUTTON_PADDING_H = 32;
+    public static final float FAMILY_LABEL_MARGIN_TOP = 22;
+    public static final float FAMILY_LABEL_MARGIN_BOTTOM = 11;
 }
