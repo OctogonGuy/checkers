@@ -696,7 +696,6 @@ public class Checkers implements Serializable {
         undoMove();
 		Player lastMovedPlayer = getCurPlayer();
 		while (getCurPlayer() == lastMovedPlayer) {
-            System.out.println(lastMovedPlayer);
 			setState(history.previous(), history.getCurrentCapturedPosArr(), history.getCurrentCapturingPiecePos());
 		}
         redoMove();

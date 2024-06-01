@@ -885,7 +885,7 @@ public class GameScreen implements Screen {
      * Makes computer player play move
      */
     private void determineComputerMove() {
-        if (animating || !captures.isEmpty() || computerMoving || UserData.game.isOver()
+        if (animating || computerMoving || UserData.game.isOver()
             || !(UserData.game.getCurPlayer() == UserData.game.topPlayer() && UserData.topPlayerComputer ||
             UserData.game.getCurPlayer() == UserData.game.bottomPlayer() && UserData.bottomPlayerComputer)) return;
 
