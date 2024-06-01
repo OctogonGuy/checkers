@@ -79,7 +79,7 @@ public class CustomGameScreen implements Screen {
         // Options table
         Table optionsTable = new Table();
         optionsTable.columnDefaults(0).left();
-        optionsTable.defaults().expandX().padTop(UIStyle.V_SPACING);
+        optionsTable.defaults().expandX().padTop(UIStyle.TABLE_V_SPACING);
         optionsTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
         optionsTable.setBackground(skin.getDrawable("innerColor"));
         CustomScrollPane optionsTableScrollPane = new CustomScrollPane(optionsTable, skin);

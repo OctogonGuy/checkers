@@ -40,14 +40,16 @@ public class VariantInfoScreen implements Screen {
 
         // Name
         HeaderLabel nameText = new HeaderLabel(variant.getName(), skin);
-        table.add(nameText);
+        nameText.setWrap(true);
+        nameText.setAlignment(Align.center);
+        table.add(nameText).width(stage.getWidth() - UIStyle.H_PADDING * 2);
         table.row().space(0);
 
         // Info table
         Table infoTable = new Table();
+        infoTable.columnDefaults(0).left();
         infoTable.defaults().expandX().padTop(UIStyle.TABLE_V_SPACING);
         infoTable.pad(UIStyle.V_PADDING, UIStyle.H_PADDING, UIStyle.V_PADDING, UIStyle.H_PADDING);
-        infoTable.columnDefaults(0).align(Align.left);
         infoTable.setBackground(skin.getDrawable("innerColor"));
         CustomScrollPane scrollPane = new CustomScrollPane(infoTable, skin);
         table.add(scrollPane).expand().fill();
