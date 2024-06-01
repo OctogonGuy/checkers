@@ -131,7 +131,6 @@ public class NewGameScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 UserData.selectedVariant = variantTree.getSelected();
-                System.out.println(UserData.selectedVariant);
             }
         });
         CustomScrollPane listScrollPane = new CustomScrollPane(variantTree, skin);
