@@ -55,8 +55,9 @@ public class NewGameScreen implements Screen {
         Image logo = new Image(logoTexture);
         table.add(logo).size(
             stage.getWidth() / 2,
-            logoTexture.getHeight() * (stage.getWidth() / logoTexture.getWidth()) / 2);
-        table.row().padTop(0);
+            logoTexture.getHeight() * (stage.getWidth() / logoTexture.getWidth()) / 2)
+            .padTop(0);
+        table.row();
 
         // Subtitle
         Label subtitleLabel = new Label("Select a variant to play.", skin);
