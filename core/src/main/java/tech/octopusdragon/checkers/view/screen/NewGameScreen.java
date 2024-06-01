@@ -135,6 +135,7 @@ public class NewGameScreen implements Screen {
         });
         CustomScrollPane listScrollPane = new CustomScrollPane(variantTree, skin);
         listScrollPane.scrollTo(0, variantTree.getSelectedY(), 0, 0);
+        listScrollPane.updateVisualScroll();
         table.add(listScrollPane).expand().fill().maxWidth(UIStyle.MAX_WIDTH);
         table.row();
 

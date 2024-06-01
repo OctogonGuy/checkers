@@ -66,7 +66,7 @@ public class VariantTree extends Table {
     }
 
     /**
-     * @return The y-value of the selected item
+     * @return The y position of the selected item
      */
     public float getSelectedY() {
         Variant selVar = getSelected();
