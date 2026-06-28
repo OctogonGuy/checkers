@@ -834,7 +834,7 @@ public enum Variant {
 		InputStream inputStream = null;
 		try {
 			inputStream = Variant.class.getClassLoader().getResourceAsStream(
-					"variant_descriptions/" + name().toLowerCase() + ".txt");
+					"variant-descriptions/" + name().toLowerCase() + ".txt");
 			BufferedReader inputFile = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			StringBuilder descriptionSB = new StringBuilder();
 			String line;
