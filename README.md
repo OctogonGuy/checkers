@@ -44,6 +44,14 @@ You must have the following installed on your computer to run the application:
 Perform the following steps to be able to run the application:
 
 1. Clone the repository
+2. Navigate to the repository
+   ```
+   cd checkers
+   ```
+3. Add execute permissions for `mvnw`
+   ```
+   chmod +x mvnw
+   ```
 
 ### Running
 
