@@ -1,3 +1,19 @@
+/* --- Fonts --- */
+
+@font-face {
+	font-family: Merriweather;
+	src: url('../fonts/Merriweather-Regular.ttf');
+}
+
+@font-face {
+	font-family: "The Greatest Font";
+	src: url('../fonts/The-Greatest-Font.otf');
+}
+
+
+
+/* --- General --- */
+
 .root {
 	-white-board-color: #CDB488;
 	-black-board-color: #866046;
@@ -7,7 +23,8 @@
 	-menu-color-2: #fbf7ef;
 	
 	
-	-fx-font-family: Constantia;
+	-fx-font-family: Merriweather, Serif;
+	/*-fx-font-size: 16px;*/
 	-fx-background-color: #ffefe0;
 }
 
@@ -23,9 +40,8 @@
 }
 
 #logo {
-	-fx-font-family: "Algerian";
-	-fx-font-size: 48px;
-	-fx-font-weight: bold;
+	-fx-font-family: "The Greatest Font";
+	-fx-font-size: 72px;
 	-fx-text-fill: linear-gradient(#ff3535, #8a1602);
 	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 7, 0.4, 0, 3px);
 }

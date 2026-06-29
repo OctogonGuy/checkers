@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane id="variant-info-dialog" prefHeight="350.0" prefWidth="450.0" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="variant-info-dialog" prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <StackPane styleClass="header" BorderPane.alignment="CENTER">
          <children>
